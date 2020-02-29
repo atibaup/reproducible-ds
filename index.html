@@ -1,1 +1,188 @@
-<p1>Hello!</p1>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to ML In Production 2020 edition’s documentation! &#8212; ML In Production 2020 edition 2019.12.28 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1. Reproducibility" href="1_reproducibility/1_1_0_intro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-ml-in-production-2020-edition-s-documentation">
+<h1>Welcome to ML In Production 2020 edition’s documentation!<a class="headerlink" href="#welcome-to-ml-in-production-2020-edition-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_0_intro.html">1. Reproducibility</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_0_intro.html#why-does-reproducibility-matter">1.1. Why does reproducibility matter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_0_intro.html#modes-of-collaboration">1.2. Modes of collaboration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_0_intro.html#reproducibility-is-a-means-to-an-end">1.3. Reproducibility is a means to an end</a></li>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_0_intro.html#additional-resources">1.4. Additional resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html">2. Environment management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#why-should-we-care">2.1. Why should we care?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#how-we-typically-think-of-our-work">2.1.1. How we typically think of our work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#even-the-simplest-code-relies-on-many-other-things">2.1.2. Even the simplest code relies on many other things…</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#and-needs-to-run-on-different-environments">2.1.3. And needs to run on <em>different</em> environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#how-we-should-think-of-our-work">2.1.4. How we <em>should</em> think of our work</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#python-dependency-management">2.2. Python dependency management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#many-snakes">2.2.1. Many snakes…</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#how-does-python-imports-libraries">2.2.2. How does Python imports libraries?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#what-does-pip-install-do">2.2.3. What does <cite>pip install</cite> do?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#example-numpy">2.2.4. Example: numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#pip-hell">2.2.5. Pip hell</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#we-need-a-tool-to">2.2.6. We need a tool to:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#available-tools">2.2.7. Available tools</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#env-management-via-conda">2.3. Env Management via Conda</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#what-is-conda">2.3.1. What is conda?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#quick-foreplay">2.3.2. Quick foreplay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#you-can-port-conda-environments">2.3.3. You can port <cite>conda</cite> environments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#you-can-manage-non-python-dependencies">2.3.4. You can manage non-python dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#you-can-continue-using-pip-with-care">2.3.5. You can continue using pip… with care</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#conda-envs-limitations">2.3.6. conda envs limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#quizz">2.3.7. Quizz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#practice-time">2.3.8. Practice time!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html#additional-resources">2.3.9. Additional resources</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_2_make.html">3. Simple automation with Make</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#makefiles">3.1. Makefiles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#make-hello-world">3.1.1. Make “Hello World!”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#make-concepts">3.1.2. Make concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#using-variables">3.1.3. Using variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#dry-run-seeing-the-execution-plan">3.1.4. Dry-run: seeing the execution plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#parallel-execution">3.1.5. Parallel execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#make-gotchas">3.1.6. Make gotchas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#using-make-with-conda">3.1.7. Using Make with conda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#quizz">3.1.8. Quizz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_2_make.html#practice-time">3.1.9. Practice time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html">4. Project templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html#templates">4.1. Templates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html#most-ds-projects-consist-in-similar-workflows">4.1.1. Most DS projects consist in similar workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html#example-project-structure">4.1.2. Example project structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html#cookiecutter-hello-world">4.1.3. cookiecutter Hello world!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html#recommendations">4.1.4. Recommendations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html#cookiecutter-pre-post-hooks">4.1.5. cookiecutter: pre/post hooks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html#cookiecutter-jinja-templates">4.1.6. cookiecutter: Jinja Templates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html#practice-time-build-your-own-template">4.1.7. Practice time: Build your own template!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<span class="admonition-indices-and-tables"></span></div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">ML In Production 2020 edition</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_0_intro.html">1. Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html">2. Environment management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_2_make.html">3. Simple automation with Make</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html">4. Project templates</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_0_intro.html">1. Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_1_conda.html">2. Environment management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_2_make.html">3. Simple automation with Make</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_reproducibility/1_1_3_project_templates.html">4. Project templates</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="1_reproducibility/1_1_0_intro.html" title="next chapter"><span class="section-number">1. </span>Reproducibility</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Arnau Tibau Puig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

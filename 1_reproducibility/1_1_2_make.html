@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>3. Simple automation with Make &#8212; ML In Production 2020 edition 2019.12.28 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Project templates" href="1_1_3_project_templates.html" />
+    <link rel="prev" title="2. Environment management" href="1_1_1_conda.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="simple-automation-with-make">
+<h1><span class="section-number">3. </span>Simple automation with Make<a class="headerlink" href="#simple-automation-with-make" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="makefiles">
+<h2><span class="section-number">3.1. </span>Makefiles<a class="headerlink" href="#makefiles" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="make-hello-world">
+<h3><span class="section-number">3.1.1. </span>Make “Hello World!”<a class="headerlink" href="#make-hello-world" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a file called `Makefile` and write these 2 lines</span>
+hello.txt:
+        <span class="nb">echo</span> <span class="s2">&quot;Hello world!&quot;</span> &gt; hello.txt
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span> make hello.txt
+<span class="go">echo &quot;Hello world!&quot; &gt; hello.txt</span>
+<span class="gp">&gt;</span> cat hello.txt
+<span class="go">Hello world!</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.gnu.org/software/make/">GNU Make</a> is a build tool</p></li>
+<li><p><cite>Makefile</cite> contains <strong>targets</strong> as a collection of <strong>recipes</strong></p></li>
+<li><p><cite>make</cite> runs the targets we select</p></li>
+</ul>
+</div>
+<div class="section" id="make-concepts">
+<h3><span class="section-number">3.1.2. </span>Make concepts<a class="headerlink" href="#make-concepts" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># recipe for `target_1`</span>
+target_1: dependencies_1
+        task_1
+...
+<span class="c1"># recipe for `target_N`</span>
+target_N: target_1 target_5
+        task_N
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Each entry in the Makefile is a recipe</p></li>
+<li><p>Simple syntax: <cite>target: dependencies</cite></p></li>
+<li><p><strong>Both targets and dependencies are considered files</strong></p></li>
+<li><p>Recipes define a DAG between targets and dependencies</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.11.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.11.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.11.png" style="width: 650px;" /></a>
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.12.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.12.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.12.png" style="width: 600px;" /></a>
+<p>(assuming both parents exist)</p>
+<ol class="arabic simple">
+<li><p>If C exists –&gt; check if its timestamp is &lt; or &gt; than that of its parents. If “&lt;”, run C, else pass.</p></li>
+<li><p>If C doesn’t exist –&gt; run C.</p></li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>.setup_done: environment.yml
+        conda env create --force -f environment.yml
+        mkdir -pv data
+        touch .setup_done
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Some tasks don’t generate files (ex: <cite>conda env create</cite>)</p></li>
+<li><p><strong>sentinel files</strong> are used to create recipes in this case</p></li>
+<li><p><cite>.setup_done</cite> is the <strong>sentinel file</strong> in the example</p></li>
+</ul>
+<p>We may be tempted to add targets such as this one:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>train: data/model.tar.gz
+</pre></div>
+</div>
+<dl class="simple">
+<dt>which would not work if there happen to be a <cite>train</cite> file in your working directory. <cite>.PHONY</cite> targets</dt><dd><p>avoid this potential problem:</p>
+</dd>
+</dl>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>.PHONY: train
+train: data/model.tar.gz
+</pre></div>
+</div>
+<p>And now <cite>make</cite> knows that <cite>train</cite> is always out-of-date.</p>
+</div>
+<div class="section" id="using-variables">
+<h3><span class="section-number">3.1.3. </span>Using variables<a class="headerlink" href="#using-variables" title="Permalink to this headline">¶</a></h3>
+<p>We can define variables within a Makefile</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nv">DATA_FOLDER</span> <span class="o">=</span> data/
+<span class="nv">ARTEFACT_PATH</span> <span class="o">=</span> <span class="k">$(</span>DATA_FOLDER<span class="k">)</span>/model.tar.gz
+train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
+</pre></div>
+</div>
+<p>We can even define them in a separate file and include them:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>include Makefile.conf <span class="c1"># Filename is irrelevant</span>
+train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
+</pre></div>
+</div>
+<p>where <cite>Makefile.conf</cite> would contain the variable definition</p>
+<p>A very useful feature are variables that can be passed as command-line arguments:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>DATA_FOLDER ?<span class="o">=</span> data/ <span class="c1"># Notice the &quot;?&quot; before the &quot;=&quot;</span>
+<span class="nv">ARTEFACT_PATH</span> <span class="o">=</span> <span class="k">$(</span>DATA_FOLDER<span class="k">)</span>/model.tar.gz
+train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
+</pre></div>
+</div>
+<p>And now we can do, for example</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span> make train <span class="nv">DATA_FOLDER</span><span class="o">=</span>/tmp/data
+</pre></div>
+</div>
+</div>
+<div class="section" id="dry-run-seeing-the-execution-plan">
+<h3><span class="section-number">3.1.4. </span>Dry-run: seeing the execution plan<a class="headerlink" href="#dry-run-seeing-the-execution-plan" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simple example Makefile</span>
+.setup_done:
+        touch .setup_done
+
+data.gz: .setup_done
+        <span class="c1"># `$@` below is a &quot;special&quot; variable with the name of the target</span>
+        touch <span class="nv">$@</span>
+
+model.gz: data.gz
+        touch <span class="nv">$@</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> This will not run the targets but show you the execution plan
+<span class="gp">&gt;</span> make model.gz --dry-run
+</pre></div>
+</div>
+</div>
+<div class="section" id="parallel-execution">
+<h3><span class="section-number">3.1.5. </span>Parallel execution<a class="headerlink" href="#parallel-execution" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>.setup_done:
+        touch .setup_done
+
+data_1.gz: .setup_done
+        touch <span class="nv">$@</span>
+
+data_2.gz: .setup_done
+        touch <span class="nv">$@</span>
+
+model.gz: data_1.gz data_2.gz
+        touch <span class="nv">$@</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> The order of execution might vary but it always respects the DAG
+<span class="gp">&gt;</span> make model.gz --jobs <span class="m">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="make-gotchas">
+<h3><span class="section-number">3.1.6. </span>Make gotchas<a class="headerlink" href="#make-gotchas" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes <cite>make</cite>’s behavior can be a bit puzzling…</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.gnu.org/software/make/manual/make.html#Execution">Each line in a recipe = a different shell</a></p></li>
+<li><p><a class="reference external" href="https://www.gnu.org/software/make/manual/html_node/Errors.html">Stops on errors</a>, but by default doesn’t remove generated targets</p></li>
+<li><p>Directories are treated like files</p></li>
+<li><p>Multiple targets imply multiple invokations</p></li>
+</ul>
+<ul class="note simple">
+<li><p>A few good <a class="reference external" href="https://tech.davis-hansson.com/p/make/">tips &amp; tricks from Davis-Hansson</a></p></li>
+<li><p><a class="reference external" href="https://swcarpentry.github.io/make-novice/">Software Carpentry’s Make tutorial</a></p></li>
+<li><p><a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">GNU make manual</a></p></li>
+</ul>
+</div>
+<div class="section" id="using-make-with-conda">
+<h3><span class="section-number">3.1.7. </span>Using Make with conda<a class="headerlink" href="#using-make-with-conda" title="Permalink to this headline">¶</a></h3>
+<p>Since <cite>Make</cite> spawns a new shell, our recipes would not run in the desired environment…</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CONDA_ROOT</span> <span class="o">=</span> /Users/arnau.tibau/miniconda3/
+<span class="nv">ENV_NAME</span> <span class="o">=</span> ml_in_prod
+<span class="nv">PIP</span> <span class="o">=</span> <span class="k">$(</span>CONDA_ROOT<span class="k">)</span>/envs/<span class="k">$(</span>ENV_NAME<span class="k">)</span>/bin/pip
+<span class="nv">PYTHON</span> <span class="o">=</span> <span class="k">$(</span>CONDA_ROOT<span class="k">)</span>/envs/<span class="k">$(</span>ENV_NAME<span class="k">)</span>/bin/python
+
+.setup_done:
+        <span class="c1"># Installs our package in the desired environment</span>
+        <span class="k">$(</span>PIP<span class="k">)</span> install -e .
+        touch .setup_done
+
+model.gz: data.gz
+        <span class="c1"># Runs the script under the right environment</span>
+        <span class="k">$(</span>PYTHON<span class="k">)</span> my_training_script.py data.gz
+</pre></div>
+</div>
+</div>
+<div class="section" id="quizz">
+<h3><span class="section-number">3.1.8. </span>Quizz<a class="headerlink" href="#quizz" title="Permalink to this headline">¶</a></h3>
+<p>What would this recipe do?</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>A B: C D
+        touch A
+        <span class="nb">echo</span> <span class="s2">&quot;B&quot;</span> &gt; B
+</pre></div>
+</div>
+<ol class="loweralpha simple">
+<li><p>This is not valid syntax</p></li>
+<li><p>It would generate two files (A and B) if C <em>OR</em> D’s state changes since last execution</p></li>
+<li><p>It would generate two files (A and B) if C <em>AND</em> D’s state changes since last execution</p></li>
+<li><p>A wonderful seafood rice</p></li>
+</ol>
+<p>Do these two Makefiles have the same behavior when you run <cite>make all</cite>?</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Makefile #1</span>
+A B: C
+        touch A
+        touch B
+all: A B
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Makefile #2</span>
+A: C
+        touch A
+B: C
+        touch B
+all: A B
+</pre></div>
+</div>
+</div>
+<div class="section" id="practice-time">
+<h3><span class="section-number">3.1.9. </span>Practice time<a class="headerlink" href="#practice-time" title="Permalink to this headline">¶</a></h3>
+<p>Write a <cite>Makefile</cite> with at least:</p>
+<p>1. A <cite>setup</cite> target that creates a conda environment from the Yaml file we created in last chapter’s <em>Practice time</em>
+and runs the corresponding <cite>test_env.py</cite></p>
+<ol class="arabic simple" start="3">
+<li><p>A <cite>clean</cite> target that removes the created environment</p></li>
+<li><p><strong>BONUS</strong>: Read and try your luck with <a class="reference external" href="https://swcarpentry.github.io/make-novice/05-patterns/index.html">Pattern Rules</a></p></li>
+</ol>
+<p class="note">You can find inspiration in the capstone project <a class="reference external" href="https://github.com/mlinproduction/capstone/blob/master/2020/Makefile">Makefile</a></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ML In Production 2020 edition</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_1_0_intro.html">1. Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_1_1_conda.html">2. Environment management</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Simple automation with Make</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#makefiles">3.1. Makefiles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#make-hello-world">3.1.1. Make “Hello World!”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#make-concepts">3.1.2. Make concepts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-variables">3.1.3. Using variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dry-run-seeing-the-execution-plan">3.1.4. Dry-run: seeing the execution plan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parallel-execution">3.1.5. Parallel execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#make-gotchas">3.1.6. Make gotchas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-make-with-conda">3.1.7. Using Make with conda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quizz">3.1.8. Quizz</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#practice-time">3.1.9. Practice time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="1_1_3_project_templates.html">4. Project templates</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1_1_0_intro.html">1. Reproducibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_1_1_conda.html">2. Environment management</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Simple automation with Make</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_1_3_project_templates.html">4. Project templates</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="1_1_1_conda.html" title="previous chapter"><span class="section-number">2. </span>Environment management</a></li>
+      <li>Next: <a href="1_1_3_project_templates.html" title="next chapter"><span class="section-number">4. </span>Project templates</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Arnau Tibau Puig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/1_reproducibility/1_1_2_make.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
