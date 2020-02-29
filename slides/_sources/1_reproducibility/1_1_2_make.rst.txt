@@ -1,0 +1,299 @@
+.. 1.1.2 Make (10 slides - 20')
+	- Intro to GNU Make
+	2019: https://docs.google.com/presentation/d/1li1dQzJgXUCHXy5zsbzRq6PjVvKQ8UJqUMNollCcEGw/edit#slide=id.g5899cac9ca_0_386
+
+=================================
+Simple automation with Make
+=================================
+
+Makefiles
+=================================
+
+Make "Hello World!"
+---------------------
+
+.. code-block:: Bash
+
+	# Create a file called `Makefile` and write these 2 lines
+	hello.txt:
+		echo "Hello world!" > hello.txt
+
+.. code-block:: console
+
+	> make hello.txt
+	echo "Hello world!" > hello.txt
+	> cat hello.txt
+	Hello world!
+
+* `GNU Make <https://www.gnu.org/software/make/>`_ is a build tool
+* `Makefile` contains **targets** as a collection of **recipes**
+* `make` runs the targets we select
+
+Make concepts
+-------------
+
+.. code-block:: Bash
+
+	# recipe for `target_1`
+	target_1: dependencies_1
+		task_1
+	...
+	# recipe for `target_N`
+	target_N: target_1 target_5
+		task_N
+
+
+* Each entry in the Makefile is a recipe
+* Simple syntax: `target: dependencies`
+* **Both targets and dependencies are considered files**
+* Recipes define a DAG between targets and dependencies
+
+
+.. nextslide::
+	:increment:
+
+.. Make as DAG
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.11.png
+	:width: 650px
+	:align: center
+
+.. nextslide::
+	:increment:
+
+.. How does Make decide if target up-to-date
+
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.12.png
+	:width: 600px
+	:align: center
+
+(assuming both parents exist)
+
+1. If C exists --> check if its timestamp is < or > than that of its parents. If "<", run C, else pass.
+2. If C doesn't exist --> run C.
+
+.. nextslide::
+	:increment:
+
+.. sentinel files
+
+.. code-block:: Bash
+
+	.setup_done: environment.yml
+		conda env create --force -f environment.yml
+		mkdir -pv data
+		touch .setup_done
+
+* Some tasks don't generate files (ex: `conda env create`)
+* **sentinel files** are used to create recipes in this case
+* `.setup_done` is the **sentinel file** in the example
+
+.. nextslide::
+	:increment:
+
+.. PHONY targets
+
+We may be tempted to add targets such as this one:
+
+.. code-block:: Bash
+
+	train: data/model.tar.gz
+
+which would not work if there happen to be a `train` file in your working directory. `.PHONY` targets
+ avoid this potential problem:
+
+.. code-block:: Bash
+
+	.PHONY: train
+	train: data/model.tar.gz
+
+And now `make` knows that `train` is always out-of-date.
+
+Using variables
+-----------------------------------
+
+.. Makefile variables and include
+
+We can define variables within a Makefile
+
+.. code-block:: Bash
+
+	DATA_FOLDER = data/
+	ARTEFACT_PATH = $(DATA_FOLDER)/model.tar.gz
+	train: $(ARTEFACT_PATH)
+
+We can even define them in a separate file and include them:
+
+.. code-block:: Bash
+
+	include Makefile.conf # Filename is irrelevant
+	train: $(ARTEFACT_PATH)
+
+where `Makefile.conf` would contain the variable definition
+
+
+.. nextslide::
+	:increment:
+
+.. command line arguments
+
+A very useful feature are variables that can be passed as command-line arguments:
+
+.. code-block:: Bash
+
+	DATA_FOLDER ?= data/ # Notice the "?" before the "="
+	ARTEFACT_PATH = $(DATA_FOLDER)/model.tar.gz
+	train: $(ARTEFACT_PATH)
+
+And now we can do, for example
+
+.. code-block:: console
+
+	> make train DATA_FOLDER=/tmp/data
+
+
+Dry-run: seeing the execution plan
+-----------------------------------
+
+.. code-block:: Bash
+
+	# Simple example Makefile
+	.setup_done:
+		touch .setup_done
+
+	data.gz: .setup_done
+		# `$@` below is a "special" variable with the name of the target
+		touch $@
+
+	model.gz: data.gz
+		touch $@
+
+
+.. code-block:: console
+
+	# This will not run the targets but show you the execution plan
+	> make model.gz --dry-run
+
+Parallel execution
+---------------------
+
+.. code-block:: Bash
+
+	.setup_done:
+		touch .setup_done
+
+	data_1.gz: .setup_done
+		touch $@
+
+	data_2.gz: .setup_done
+		touch $@
+
+	model.gz: data_1.gz data_2.gz
+		touch $@
+
+.. code-block:: console
+
+	# The order of execution might vary but it always respects the DAG
+	> make model.gz --jobs 2
+
+
+Make gotchas
+---------------
+
+Sometimes `make`'s behavior can be a bit puzzling...
+
+* `Each line in a recipe = a different shell <https://www.gnu.org/software/make/manual/make.html#Execution>`_
+* `Stops on errors <https://www.gnu.org/software/make/manual/html_node/Errors.html>`_, but by default doesn't remove generated targets
+* Directories are treated like files
+* Multiple targets imply multiple invokations
+
+
+.. rst-class:: note
+
+	* A few good `tips & tricks from Davis-Hansson <https://tech.davis-hansson.com/p/make/>`_
+
+	* `Software Carpentry's Make tutorial <https://swcarpentry.github.io/make-novice/>`_
+
+	* `GNU make manual <https://www.gnu.org/software/make/manual/make.html>`_
+
+Using Make with conda
+----------------------
+
+Since `Make` spawns a new shell, our recipes would not run in the desired environment...
+
+.. code-block:: Bash
+
+	CONDA_ROOT = /Users/arnau.tibau/miniconda3/
+	ENV_NAME = ml_in_prod
+	PIP = $(CONDA_ROOT)/envs/$(ENV_NAME)/bin/pip
+	PYTHON = $(CONDA_ROOT)/envs/$(ENV_NAME)/bin/python
+
+	.setup_done:
+		# Installs our package in the desired environment
+		$(PIP) install -e .
+		touch .setup_done
+
+	model.gz: data.gz
+		# Runs the script under the right environment
+		$(PYTHON) my_training_script.py data.gz
+
+
+Quizz
+---------------
+
+What would this recipe do?
+
+.. code-block:: Bash
+
+	A B: C D
+		touch A
+		echo "B" > B
+
+a) This is not valid syntax
+
+b) It would generate two files (A and B) if C *OR* D's state changes since last execution
+
+c) It would generate two files (A and B) if C *AND* D's state changes since last execution
+
+d) A wonderful seafood rice
+
+
+.. nextslide::
+	:increment:
+
+Do these two Makefiles have the same behavior when you run `make all`?
+
+.. code-block:: Bash
+
+	# Makefile #1
+	A B: C
+		touch A
+		touch B
+	all: A B
+
+.. code-block:: Bash
+
+	# Makefile #2
+	A: C
+		touch A
+	B: C
+		touch B
+	all: A B
+
+
+Practice time
+----------------------
+
+Write a `Makefile` with at least:
+
+1. A `setup` target that creates a conda environment from the Yaml file we created in last chapter's *Practice time*
+and runs the corresponding `test_env.py`
+
+3. A `clean` target that removes the created environment
+
+4. **BONUS**: Read and try your luck with `Pattern Rules <https://swcarpentry.github.io/make-novice/05-patterns/index.html>`_
+
+.. rst-class:: note
+
+	You can find inspiration in the capstone project `Makefile <https://github.com/mlinproduction/capstone/blob/master/2020/Makefile>`_

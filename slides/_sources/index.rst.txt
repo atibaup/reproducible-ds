@@ -1,0 +1,36 @@
+.. slideconf::
+   :autoslides: False
+
+.. ML In Production 2020 edition documentation master file, created by
+   sphinx-quickstart on Sat Dec 28 18:58:31 2019.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to ML In Production 2020 edition's documentation!
+=========================================================
+
+Table of Contents
+-----------------
+
+.. toctree::
+   :maxdepth: 3
+   :numbered:
+
+   1_reproducibility/1_1_0_intro
+   1_reproducibility/1_1_1_conda
+   1_reproducibility/1_1_2_make
+   1_reproducibility/1_1_3_project_templates
+
+
+.. slide:: Indices and tables
+   :level: 3
+
+   .. toctree::
+      :maxdepth: 1
+      :numbered:
+
+      1_reproducibility/1_1_0_intro
+      1_reproducibility/1_1_1_conda
+      1_reproducibility/1_1_2_make
+      1_reproducibility/1_1_3_project_templates
+

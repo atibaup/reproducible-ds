@@ -1,0 +1,149 @@
+.. slideconf::
+   :autoslides: False
+
+================
+Reproducibility
+================
+
+* Why does it matter
+* Modes of collaboration
+* Reproducibility is a means to an end
+
+.. slide:: Reproducibility
+   :level: 1
+
+    .. rst-class:: title-image
+
+    * Why does it matter
+    * Modes of collaboration
+    * Reproducibility is a means to an end
+
+Why does reproducibility matter
+===============================
+
+.. slide:: Collaboration with future self
+   :level: 3
+
+    .. rst-class:: build
+
+    - Working with last week's idea
+    - Rescuing an old project
+    - Re-running an analysis on new data
+
+    .. figure:: /_static/1/back_to_the_future.jpg
+     :class: fill
+
+.. slide:: Collaboration with others
+   :level: 3
+
+    .. rst-class:: build
+
+    - Colleagues
+    - Internal stakeholders
+    - External peers
+
+    .. figure:: /_static/1/solvay_conf.jpg
+     :class: fill
+
+   .. note:: Examples:
+        Colleagues
+        - Peer review
+        - Learning from each other
+        Stakeholders
+        - Incorporating domain knowledge
+        - Informing decision-making
+        External peers
+        - Academic partnerships
+        - Meetups/working groups
+
+Modes of collaboration
+===================================
+
+.. slide:: Modes of collaboration: Synchronous
+    :level: 3
+
+    .. figure:: /_static/1/feynman.jpg
+     :class: fill
+
+    .. rst-class:: build
+
+      * Shared time (& often also space)
+      * Interaction mostly one-way
+      * Enables cognitive biases: Groupthink, Halo effect, Authority bias...
+
+    .. note::
+
+      Example: Someone presents project slides to a group during a meeting.
+      Participants need to share time (and often space)
+      Group typically tinkers with artifact (and presenter) and gives feedback
+      - Requires lots of prep to be effective
+      - Is limited to observation of the artifact (and the presenter)
+      - Suffers from presenter bias
+
+
+.. slide:: Modes of collaboration: Asynchronous
+    :level: 3
+
+    .. figure:: /_static/1/cathedral_bazaar.jpg
+     :class: fill
+
+    .. rst-class:: build
+
+    - Distributed in time & space
+    - Collaborators can tinker
+    - Two-way interactions
+    - Requires adequate tools
+
+        This is a quote with `interpreted text`
+
+    .. code-block:: python
+
+        import sklearn
+        a = 1 + 2
+
+    .. note:: Example: open source projects
+      Distributed in time and space
+      Everybody has access to the development code and artifact in their own terms
+      Group can tinker with everything and give feedback, which can be replied to also asynchronously
+      Requires right collaboration tools
+
+Reproducibility is a means to an end
+====================================
+
+.. slide:: Reproducibility is a means to an end
+    :level: 3
+
+    .. image::  /_static/1/joel_grus.png
+        :width: 600px
+        :align: center
+        :height: 700px
+        :alt: alternate text
+
+    .. seealso:: This is a simple **seealso** note.
+
+    https://docs.google.com/presentation/d/1yHLPvPhUs2KGI5ZWo0sU-PKU3GimAk3iTsI38Z-B5Gw/edit#slide=id.p
+
+.. slide:: The three Rs: repeatability, replicability, reproducibility
+   :level: 3
+
+    .. figure:: /_static/1/rrr.png
+     :class: fill
+
+
+.. slide:: The main pillars
+   :level: 3
+
+    .. figure:: /_static/1/baalbek.jpg
+
+    - Tools  --> we'll look at some, but they will change
+    - Culture/Mindset --> I hope to convince you :)
+
+Additional resources
+====================
+
+.. slide:: Additional resources
+   :level: 3
+
+   * a
+   * b
+   * c

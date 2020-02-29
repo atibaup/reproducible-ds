@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. Project templates &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/slides.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2019.12.28',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="ML In Production 2020 edition 2019.12.28 documentation" href="../index.html" />
+    <link rel="prev" title="3. Simple automation with Make" href="1_1_2_make.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="slide level-1" id="project-templates">
+
+<h1>Project templates</h1>
+
+
+
+
+<div class="slide-no">1</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-2" id="templates">
+
+<h2>Templates</h2>
+
+
+
+
+<div class="slide-no">2</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="most-ds-projects-consist-in-similar-workflows">
+
+<h3>Most DS projects consist in similar workflows</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.13.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.13.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.13.png" style="width: 700px;" /></a>
+<p class="note">Example one-off data analysis workflow</p>
+
+
+
+<div class="slide-no">3</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id1">
+
+<h3>Most DS projects consist in similar workflows (2)</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.14.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.14.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.14.png" style="width: 700px;" /></a>
+<p class="note">Example train/deploy model workflow</p>
+
+
+
+<div class="slide-no">4</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="example-project-structure">
+
+<h3>Example project structure</h3>
+
+<div class="highlight-Console notranslate"><div class="highlight"><pre><span></span><span class="go">src/</span>
+<span class="go">.... package_name/ # package source</span>
+<span class="go">........ __init__.py</span>
+<span class="go">tests/ # package tests</span>
+<span class="go">data/ # input data and artefacts</span>
+<span class="go">.... raw/</span>
+<span class="go">.... processed/</span>
+<span class="go">.... artefacts/</span>
+<span class="go">bin/ # scripts</span>
+<span class="go">CI/ # CI/CD stuff</span>
+<span class="go">setup.py # setuptools for package</span>
+<span class="go">environment.yml # environment configuration</span>
+<span class="go">Makefile</span>
+<span class="go">.gitignore</span>
+</pre></div>
+</div>
+<p class="note">No one-size-fits-all: Different projects may warrant different structures</p>
+
+
+
+<div class="slide-no">5</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id2">
+
+<h3>Example project structure (2)</h3>
+
+<ul class="simple">
+<li>Promotes consistency &amp; good practices</li>
+<li>Facilitates review &amp; reproducibility</li>
+<li>Enables automation</li>
+</ul>
+<p class="note">We can use tools like <a class="reference external" href="https://cookiecutter.readthedocs.io/en/1.7.0/">cookiecutter</a> or
+<a class="reference external" href="https://pyscaffold.org/en/latest/">pyScaffold</a> to create and use templates
+to reduce cognitive load</p>
+
+
+
+<div class="slide-no">6</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="cookiecutter-hello-world">
+
+<h3>cookiecutter Hello world!</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a folder with these contents</span>
+hello_world_template/
+...cookiecutter.json
+...<span class="o">{{</span>cookiecutter.directory_name<span class="o">}}</span>/
+......hello_world.py
+
+<span class="c1"># contents of hello_world.py</span>
+print<span class="o">(</span><span class="s2">&quot;Hello, {{cookiecutter.your_name}}!&quot;</span><span class="o">)</span>
+
+<span class="c1"># contents of cookiecutter.json</span>
+<span class="o">{</span><span class="s2">&quot;directory_name&quot;</span>: <span class="s2">&quot;project_name&quot;</span>, <span class="s2">&quot;your_name&quot;</span>: <span class="s2">&quot;Arnau&quot;</span><span class="o">}</span>
+</pre></div>
+</div>
+<p>And now, magic:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># to create a new project</span>
+cookiecutter hello_world_template
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">7</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="recommendations">
+
+<h3>Recommendations</h3>
+
+<p class="note">Organize your projects in a clear, consistent, meaningful manner</p>
+<ol class="arabic simple">
+<li><strong>Clear</strong>: each file and folder are easily understood from their context and name</li>
+<li><strong>Consistent</strong>: every project follows the same logic, no surprises</li>
+<li><strong>Meaningful</strong>: every choice has a proper motivation</li>
+</ol>
+<p>Other opinionated guidelines:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.thoughtworks.com/insights/blog/coding-habits-data-scientists">Coding habits for Data Scientists</a></li>
+<li><a class="reference external" href="https://drivendata.github.io/cookiecutter-data-science/#opinions">Cookiecutter data-science Opinions</a></li>
+</ul>
+
+
+
+<div class="slide-no">8</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="cookiecutter-pre-post-hooks">
+
+<h3>cookiecutter: pre/post hooks</h3>
+
+<p>You can automate certain pre/post-project setup tasks with
+Python or shell scripts:</p>
+<div class="highlight-Console notranslate"><div class="highlight"><pre><span></span><span class="go">cookiecutter-something/</span>
+<span class="go">├── {{cookiecutter.project_name}}/</span>
+<span class="go">├── hooks</span>
+<span class="go">│   ├── pre_gen_project.py</span>
+<span class="go">│   └── post_gen_project.sh</span>
+<span class="go">└── cookiecutter.json</span>
+</pre></div>
+</div>
+<p>Examples:</p>
+<ul class="simple">
+<li>Pre-hook: checking that package name is valid</li>
+<li>Post-hook: initializing git repo</li>
+</ul>
+
+
+
+<div class="slide-no">9</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id3">
+
+<h3>cookiecutter: pre/post hooks (2)</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example pre_gen_project.py</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">PACKAGE_REGEX</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^[_a-zA-Z][_a-zA-Z0-9]+$&#39;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">PACKAGE_REGEX</span><span class="p">,</span> <span class="p">{{</span> <span class="n">cookiecutter</span><span class="o">.</span><span class="n">package_name</span> <span class="p">}}</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example pre_gen_project.sh</span>
+<span class="c1">#!/usr/bin/env bash</span>
+<span class="nb">echo</span> <span class="s2">&quot;Initializing git repository...&quot;</span>
+git init
+<span class="c1"># Commit project skeleton to the repository</span>
+git add * <span class="c1"># or whatever we want to check-in</span>
+git commit -m <span class="s1">&#39;{{cookiecutter.module_name}} first commit&#39;</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">10</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="cookiecutter-jinja-templates">
+
+<h3>cookiecutter: Jinja Templates</h3>
+
+<p>We can use Jinja templates in the <cite>cookiecutter.json</cite> <strong>values</strong>:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="o">{</span>
+<span class="s2">&quot;mod_name&quot;</span>: <span class="s2">&quot;&quot;</span>,
+<span class="s2">&quot;pkg_name&quot;</span>: <span class="s2">&quot;{{ cookiecutter.mod_name|lower|replace(&#39; &#39;, &#39;_&#39;)|replace(&#39;-&#39;, &#39;_&#39;) }}&quot;</span>,
+<span class="s2">&quot;project_url&quot;</span>: <span class="s2">&quot;https://github.com/atibaup/{{ cookiecutter.pkg_name }}&quot;</span>,
+<span class="s2">&quot;year&quot;</span>: <span class="s2">&quot;{% now &#39;utc&#39;, &#39;%Y&#39; %}&quot;</span>,
+<span class="s2">&quot;_extensions&quot;</span>: <span class="o">[</span><span class="s2">&quot;jinja2_time.TimeExtension&quot;</span><span class="o">]</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">11</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="practice-time-build-your-own-template">
+
+<h3>Practice time: Build your own template!</h3>
+
+<p>Let’s put together the three things we just learned: Set up your own project
+template with:</p>
+<p>1. Your favored project folder structure. You can find inspiration from
+<a class="reference external" href="https://github.com/drivendata/cookiecutter-data-science">cookiecutter-data-science</a>,
+<a class="reference external" href="https://github.com/audreyr/cookiecutter-pypackage">cookiecutter-pypackage</a>,
+or <a class="reference external" href="https://github.com/atibaup/reproducibility-course/tree/master/2_env_management/playtime/ds_template">an example from the 2019 edition</a>.</p>
+<p>2. A Makefile with <cite>setup</cite>, <cite>dataset</cite> and <cite>clean</cite> targets, setting up
+the conda environment and installing the local module (if there is one)</p>
+<ol class="arabic simple" start="3">
+<li>Pre-cookiecutter hooks to validate the cookiecutter variables</li>
+<li>Post-cookiecutter hooks to initialize a repository</li>
+<li>Bonus: set up <a class="reference external" href="https://pre-commit.com/#intro">pre-commit hooks</a></li>
+</ol>
+
+
+
+<div class="slide-no">12</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

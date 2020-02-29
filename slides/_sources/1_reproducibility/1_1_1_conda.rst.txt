@@ -1,0 +1,321 @@
+.. 1.1.1 Conda (20 slides - 30')
+	- Intro to env management
+	- do it early, do it well
+	- virtual env/ pip
+	- conda to the rescue
+	2019: https://docs.google.com/presentation/d/1VDS8U6KS-4IxZC_PnlBpCs97f7na_dkBAgCEKH-Uv4w/edit#slide=id.e4e8d55d-8438-11e9-99e4-c510e347f4d1
+
+=================================
+Environment management
+=================================
+
+Why should we care?
+=================================
+
+How we typically think of our work
+-----------------------------------------
+
+.. figure that DS code is just a piece running on top of complex platform
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.1.png
+	:width: 600px
+	:align: center
+
+
+.. rst-class:: note
+
+	Data and source goes in: artefacts come out
+
+
+Even the simplest code relies on many other things...
+------------------------------------------------------
+
+.. figure that DS code is just a piece running on top of complex platform
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.6.png
+	:width: 600px
+	:align: center
+
+
+And needs to run on *different* environments
+-----------------------------------------------------------
+
+.. example showing typical workflow: launch into EC2 instance, or deploy model on Sagemaker, cloud engine or on-premise
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.3.png
+	:width: 500px
+	:align: center
+
+.. rst-class:: note
+
+	How do we make sure we can *port* and *reproduce* the same results?
+
+
+How we *should* think of our work
+-----------------------------------------
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.2.png
+	:width: 600px
+	:align: center
+
+.. rst-class:: note
+
+	Is this an overkill? Are we overthinking it?
+
+
+Python dependency management
+============================================
+
+Many snakes...
+--------------------
+
+.. $PATH determines what runs when we say "python"
+
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.8.png
+	:width: 600px
+	:align: center
+
+.. rst-class:: note
+
+	 Many different pythons co-exist in a host... `$PATH` determines which one we run
+
+
+How does Python imports libraries?
+--------------------------------------------------------
+
+.. Looks at sys.path
+
+.. code-block:: Python
+
+	import numpy
+
+1. **built-in packages** (`import sys; sys.builtin_module_names`)
+
+2. Current directory
+
+3. Rest of **sys.path** (which includes `{python_root}/site-packages`
+
+
+*Tip*: Use `help('modules')` to find all installed packages
+
+Ref: `Python 3 doc: the module search path <https://docs.python.org/3/tutorial/modules.html#the-module-search-path>`_ and
+`Chris Yeh's guide to import statements <https://chrisyeh96.github.io/2017/08/08/definitive-guide-python-imports.html>`_
+
+
+
+What does `pip install` do?
+--------------------------------------------------------
+
+.. Fins source distribution or binary (wheel) + fins its dependencies + installs all packages (build wheel + copy to lib path)
+
+1. Looks for source or binary distribution in `PyPi Index <https://pypi.org/simple/>`_
+
+2. Discovers its dependencies
+
+3. Installs all packages (target + dependencies)
+
+
+.. warning::
+	All third-party packages are *installed in* ("copied into") the same folder `{python_root}/site-packages`!
+
+
+Ref: `Alex Becker's "How pip install works" <https://dev.to/alexbecker/how-pip-install-works-323j>`_
+
+
+Example: numpy
+----------------
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.9.png
+	:width: 600px
+	:align: center
+
+
+`https://pypi.org/simple/numpy <https://pypi.org/simple/numpy/>`_
+
+
+Pip hell
+-------------
+
+Does anything like this sound familiar?
+
+.. code-block:: none
+
+	> pip install google-cloud-storage==1.13.2
+
+	ERROR: google-cloud-storage 1.13.2 has requirement XYZ
+	but you'll have google-cloud-core 0.28.1 which is incompatible.
+
+Or this:
+
+.. code-block:: none
+
+	> pip install coolest-package
+
+	... bla bla ...
+	clang: error: unsupported option '-fopenmp'
+	error: command 'gcc' failed with exit status 1
+
+.. figure with example of conflicting dependencies for different projects
+
+	As we saw, all 3rd party libraries are "installed" in the same place
+
+	.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.9.png
+		:width: 600px
+		:align: center
+
+.. nextslide::
+	:increment:
+
+.. figure:: /_static/1/pip_Resolver.png
+	:width: 700px
+	:align: center
+
+	`pip needs a dependency resolver #988 <https://github.com/pypa/pip/issues/988>`_
+
+
+We need a tool to:
+------------------
+
+* **isolate** dependencies across projects
+* properly **resolve** transitive dependencies
+* enable **porting** environment specifications from one host to another
+
+
+Available tools
+---------------------
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.7.png
+	:width: 650px
+	:align: center
+
+
+Env Management via Conda
+============================================
+
+What is conda?
+------------------------
+
+* A package manager (like `pip`) which can manage non-python stuff
+* An environment manager (like `venv`) which can also manage different Python versions
+* A proper dependency resolver (SAT checks)
+* A disk-space saver (w.r.t venv's)
+
+
+Quick foreplay
+------------------------
+
+.. code-block:: none
+
+	conda create -n vintage_env python=2.7
+
+	conda activate vintage_env
+	# now we are in a vintage 2.7 env
+
+	# install your favorite package, for example:
+	conda install pandas
+	# inspect the output
+
+	# run the python interpreter
+	python # which version is it?
+
+	conda deactivate
+	# back to the base
+
+
+You can port `conda` environments
+----------------------------------
+
+.. code-block:: none
+
+	conda env export --no-builds > env.yml
+	# I would recommend to manually edit `env.yml`:
+	# 1) remove any possible native libraries (gloups!)
+	# 2) and the `prefix` entry
+
+	# now let's create an environment from those specs (will fail!)
+	conda env create -f env.yml
+
+	# clean-up:
+	conda env remove -n env_name
+
+
+.. warning::
+	Envs ported like this are **not** fully reproducible: different builds + different native libraries --> different output
+
+
+You can manage non-python dependencies
+---------------------------------------
+
+.. code-block:: none
+
+	conda install git
+
+
+...but you may need to use esoteric channels:
+
+.. code-block:: none
+
+	conda config --add channels new_channel
+
+
+which you can find by searching in `<Anaconda.org>`_.
+
+
+* `Conda tips & tricks, Kale Franz <https://www.slideshare.net/continuumio/conda-tips-and-tricks-anacondacon-2018>`_
+
+* `Conda cheatsheet <https://kapeli.com/cheat_sheets/Conda.docset/Contents/Resources/Documents/index>`_
+
+
+You can continue using pip... with care
+---------------------------------------
+
+* use it only in dedicated environments (not base)
+* install all packages available in conda channels first, then use pip
+* conda will be unaware of dependencies of stuff installed via pip
+
+More info: `Using Pip in a Conda Environment <https://www.anaconda.com/using-pip-in-a-conda-environment/>`_
+
+.. rst-class:: note
+
+	`conda` doesn't know how to manage `pip` dependencies ==> no proper dependency resolution for `pip`-installed packages
+
+
+conda envs limitations
+----------------------
+
+* Conda packages are not always bleeding-edge (ex: tensorflow 1.13 up till Feb 2020)
+* You still need to manually manage different `dev` and `pro` environment specs
+* Yaml specs are not cross-platform portable
+* Using `pip` can get you in trouble
+
+
+Quizz
+----------------------
+
+1. Where is `conda` installing your packages?
+2. What do you think `which python` returns from within a conda env?
+3. What do you think `echo $PATH` returns from within a conda env?
+
+
+Practice time!
+--------------
+
+1. Create a new conda env for Python 3.7.3 named `practice_env`
+
+2. Install Flask 1.1.1, Tensorflow 2.1, pandas 1.0, scikit-learn 0.22.1
+
+3. Write a `test_env.py` that verifies import correctness
+
+4. Export the environment and send it to the person on your right
+
+5. Create a new environment from the environment sent to you by the person to your left
+
+**BONUS**: Create a jupyter notebook kernel linked to this new environment
+
+
+Additional resources
+--------------------
+
+* `Understanding conda and pip <https://www.anaconda.com/understanding-conda-and-pip/>`_
+* `What is pip? <https://realpython.com/what-is-pip/>`_

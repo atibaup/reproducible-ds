@@ -1,0 +1,146 @@
+img.fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
+
+  border-radius: 10px;
+  -o-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+
+  z-index: -1;
+}
+
+a.headerlink {
+    visibility: hidden;
+}
+
+h1:hover > a.headerlink,
+h2:hover > a.headerlink,
+h3:hover > a.headerlink,
+h4:hover > a.headerlink,
+h5:hover > a.headerlink,
+h6:hover > a.headerlink,
+dt:hover > a.headerlink {
+    visibility: visible;
+}
+
+div.figure p.caption {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 0.5em;
+}
+
+.slide-no {
+    position: absolute;
+    bottom: 1ex;
+    right: 1em;
+    font-size: 66%;
+}
+
+.slide-footer {
+    position: absolute;
+    bottom: 1ex;
+    left: 1em;
+    font-size: 66%;
+}
+
+div.admonition.note {
+    visibility: hidden;
+    display: none;
+}
+
+/* From https://github.com/pchampin/sphinx-sab-theme/blob/master/static/sab-slides.css */
+
+/* Customizing "normal" slides content */
+
+h1, h2, h3, h4, h5, h6 {
+    text-shadow:         3px 3px 5px #bbb;
+}
+
+h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 1.25em;
+}
+
+h3, h4 {
+    font-size: 130%;
+    /* h3 differs by its darker colour */
+}
+
+h5 {
+    font-size: 120%;
+}
+
+h6 {
+    font-size: 110%:
+}
+
+.figure {
+    margin-top: 1.5em;
+}
+
+
+div.figure p.caption { /* override strange rules in default slide CSS */
+    position: static;
+    margin-top: 0.5ex;
+    font-size: 80%;
+}
+
+div.warning {
+    background-color: #FFE4E4;
+    border: 1px solid #F66;
+    font-size: 80%;
+}
+
+.note, .question {
+    border: 1px solid black;
+    background-color: LightYellow;
+    padding: 1ex 1em;
+    margin-top: 2em;
+    font-size: 80%;
+}
+
+/* better lists */
+
+.slide > ul {
+    margin: 0.25em 1em 0em 0.75em;
+}
+
+
+/* better highlighted code */
+
+table.highlighttable td {
+    border: none;
+}
+
+table.highlighttable td.linenos {
+    padding-right: 0;
+    text-align: right;
+}
+
+table.highlighttable td.linenos pre {
+    box-shadow: none;
+}
+
+
+/* smaller font in literal line blocks */
+
+.line-block .line .literal {
+    font-size: 80%;
+}
+
+.literal.code {
+    background-color: #EEE;
+}
+
+
+/* custom classes */
+
+.big > .highlight > pre, .big > pre {
+    max-height: 500px;
+    overflow: auto;
+}

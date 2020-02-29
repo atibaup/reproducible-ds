@@ -1,0 +1,19 @@
+================
+Reproducibility
+================
+
+* Why does it matter
+* The three Rs: repeatability, replicability, reproducibility
+
+.. slide:: Welcome to ML In Production 2020 edition's documentation!
+   :level: 1
+
+	* Why does it matter
+	* The three Rs: repeatability, replicability, reproducibility!
+
+Why does reproducibility matter
+===============================
+
+Collaboration with future self
+==============================
+

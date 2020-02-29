@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. Reproducibility &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/slides.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2019.12.28',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="ML In Production 2020 edition 2019.12.28 documentation" href="../index.html" />
+    <link rel="next" title="2. Environment management" href="1_1_1_conda.html" />
+    <link rel="prev" title="Welcome to ML In Production 2020 edition’s documentation!" href="../index.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="admonition-reproducibility slide level-1" id="reproducibility">
+
+<h1>Reproducibility</h1>
+
+<blockquote>
+<div><ul class="title-image simple">
+<li>Why does it matter</li>
+<li>Modes of collaboration</li>
+<li>Reproducibility is a means to an end</li>
+</ul>
+</div></blockquote>
+
+
+
+<div class="slide-no">1</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="admonition-collaboration-with-future-self slide level-3">
+
+<h3>Collaboration with future self</h3>
+
+<blockquote>
+<div><ul class="build simple">
+<li>Working with last week’s idea</li>
+<li>Rescuing an old project</li>
+<li>Re-running an analysis on new data</li>
+</ul>
+<div class="figure align-default">
+<img alt="../_images/back_to_the_future.jpg" class="fill" src="../_images/back_to_the_future.jpg" />
+</div>
+</div></blockquote>
+
+
+
+<div class="slide-no">2</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="admonition-collaboration-with-others slide level-3">
+
+<h3>Collaboration with others</h3>
+
+<blockquote>
+<div><ul class="build simple">
+<li>Colleagues</li>
+<li>Internal stakeholders</li>
+<li>External peers</li>
+</ul>
+<div class="figure align-default">
+<img alt="../_images/solvay_conf.jpg" class="fill" src="../_images/solvay_conf.jpg" />
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Examples:
+Colleagues
+- Peer review
+- Learning from each other
+Stakeholders
+- Incorporating domain knowledge
+- Informing decision-making
+External peers
+- Academic partnerships
+- Meetups/working groups</p>
+</div>
+
+
+
+<div class="slide-no">3</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="admonition-modes-of-collaboration-synchronous slide level-3">
+
+<h3>Modes of collaboration: Synchronous</h3>
+
+<div class="figure align-default">
+<img alt="../_images/feynman.jpg" class="fill" src="../_images/feynman.jpg" />
+</div>
+<ul class="build simple">
+<li>Shared time (&amp; often also space)</li>
+<li>Interaction mostly one-way</li>
+<li>Enables cognitive biases: Groupthink, Halo effect, Authority bias…</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Example: Someone presents project slides to a group during a meeting.
+Participants need to share time (and often space)
+Group typically tinkers with artifact (and presenter) and gives feedback
+- Requires lots of prep to be effective
+- Is limited to observation of the artifact (and the presenter)
+- Suffers from presenter bias</p>
+</div>
+
+
+
+<div class="slide-no">4</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="admonition-modes-of-collaboration-asynchronous slide level-3">
+
+<h3>Modes of collaboration: Asynchronous</h3>
+
+<div class="figure align-default">
+<img alt="../_images/cathedral_bazaar.jpg" class="fill" src="../_images/cathedral_bazaar.jpg" />
+</div>
+<ul class="build">
+<li><p class="first">Distributed in time &amp; space</p>
+</li>
+<li><p class="first">Collaborators can tinker</p>
+</li>
+<li><p class="first">Two-way interactions</p>
+</li>
+<li><p class="first">Requires adequate tools</p>
+<q>
+This is a quote with </q>
+<cite>interpreted text</cite></q>
+</li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Example: open source projects
+Distributed in time and space
+Everybody has access to the development code and artifact in their own terms
+Group can tinker with everything and give feedback, which can be replied to also asynchronously
+Requires right collaboration tools</p>
+</div>
+
+
+
+<div class="slide-no">5</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="admonition-reproducibility-is-a-means-to-an-end slide level-3">
+
+<h3>Reproducibility is a means to an end</h3>
+
+<a class="reference internal image-reference" href="../_images/joel_grus.png"><img alt="alternate text" class="align-center" src="../_images/joel_grus.png" style="width: 600px; height: 700px;" /></a>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">This is a simple <strong>seealso</strong> note.</p>
+</div>
+<p><a class="reference external" href="https://docs.google.com/presentation/d/1yHLPvPhUs2KGI5ZWo0sU-PKU3GimAk3iTsI38Z-B5Gw/edit#slide=id.p">https://docs.google.com/presentation/d/1yHLPvPhUs2KGI5ZWo0sU-PKU3GimAk3iTsI38Z-B5Gw/edit#slide=id.p</a></p>
+
+
+
+<div class="slide-no">6</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="admonition-the-three-rs-repeatability-replicability-reproducibility slide level-3">
+
+<h3>The three Rs: repeatability, replicability, reproducibility</h3>
+
+<blockquote>
+<div><div class="figure align-default">
+<img alt="../_images/rrr.png" class="fill" src="../_images/rrr.png" />
+</div>
+</div></blockquote>
+
+
+
+<div class="slide-no">7</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="admonition-the-main-pillars slide level-3">
+
+<h3>The main pillars</h3>
+
+<blockquote>
+<div><div class="figure align-default">
+<img alt="../_images/baalbek.jpg" src="../_images/baalbek.jpg" />
+</div>
+<ul class="simple">
+<li>Tools  –&gt; we’ll look at some, but they will change</li>
+<li>Culture/Mindset –&gt; I hope to convince you :)</li>
+</ul>
+</div></blockquote>
+
+
+
+<div class="slide-no">8</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="admonition-additional-resources slide level-3">
+
+<h3>Additional resources</h3>
+
+<ul class="simple">
+<li>a</li>
+<li>b</li>
+<li>c</li>
+</ul>
+
+
+
+<div class="slide-no">9</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

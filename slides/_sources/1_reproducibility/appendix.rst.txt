@@ -1,0 +1,118 @@
+Appendix
+==========
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+.. slide:: Indices and tables
+   :level: 2
+
+   Hello!
+
+.. slide:: Indices and tables 2
+   :level: 3
+
+   Hello 2!
+
+First Slide
+------------------
+
+Some content on the first slide.
+
+.. slide:: First slide
+
+
+Second Slide
+------------------
+
+
+.. slide:: Bullet lists
+   :level: 1
+
+   * A
+   * Bulleted
+   * List
+
+   .. note::
+
+      * Make sure to mention the important background story for
+        this slide.
+
+
+Show Bullets Incrementally
+------------------------------------
+
+You can Show Bullets Incrementally
+
+.. slide:: Show Bullets Incrementally
+
+   .. rst-class:: build
+
+   - Adding the ``build`` class to a container
+   - To incrementally show its contents
+   - Remember that *Sphinx* maps the basic `class` directive to `rst-class`
+
+Displaying Images
+------------------------------------
+
+You an display images
+
+.. slide:: Displaying Images
+   :level: 2
+
+   ::
+      .. figure:: /_static/arnau_pic.jpeg
+        :class: fill
+         CC BY-SA http://www.flickr.com/photos/tamburix/2900909093/
+
+A few tricks:
+
+.. rst-class:: centered-note
+
+	This is a `centered-note`
+
+
+.. nextslide::
+
+.. table:: This is a table
+   :widths: auto
+
+   =====  =====
+	colA   colB
+   =====  =====
+   False  True
+   =====  =====
+
+
+.. nextslide::
+
+
+.. literalinclude:: example.py
+	:language: python
+	:emphasize-lines: 1, 5
+	:linenos:
+	:lines: 1-10
+
+.. nextslide::
+
+
+.. code-block:: python
+
+	import pandas as pd
+	print("code-block")
+
+.. rst-class:: note
+
+	what about this?
+
+.. warning:: This is a warning
+	with a second line
+
+.. important:: This is a note shown in slides
+
+.. note:: This is a note hidden from slides
+	with a second line

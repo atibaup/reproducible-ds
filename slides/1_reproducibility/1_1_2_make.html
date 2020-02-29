@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Simple automation with Make &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/slides.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2019.12.28',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="ML In Production 2020 edition 2019.12.28 documentation" href="../index.html" />
+    <link rel="next" title="4. Project templates" href="1_1_3_project_templates.html" />
+    <link rel="prev" title="2. Environment management" href="1_1_1_conda.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="slide level-1" id="simple-automation-with-make">
+
+<h1>Simple automation with Make</h1>
+
+
+
+
+<div class="slide-no">1</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-2" id="makefiles">
+
+<h2>Makefiles</h2>
+
+
+
+
+<div class="slide-no">2</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="make-hello-world">
+
+<h3>Make “Hello World!”</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a file called `Makefile` and write these 2 lines</span>
+hello.txt:
+        <span class="nb">echo</span> <span class="s2">&quot;Hello world!&quot;</span> &gt; hello.txt
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span> make hello.txt
+<span class="go">echo &quot;Hello world!&quot; &gt; hello.txt</span>
+<span class="gp">&gt;</span> cat hello.txt
+<span class="go">Hello world!</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><a class="reference external" href="https://www.gnu.org/software/make/">GNU Make</a> is a build tool</li>
+<li><cite>Makefile</cite> contains <strong>targets</strong> as a collection of <strong>recipes</strong></li>
+<li><cite>make</cite> runs the targets we select</li>
+</ul>
+
+
+
+<div class="slide-no">3</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="make-concepts">
+
+<h3>Make concepts</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># recipe for `target_1`</span>
+target_1: dependencies_1
+        task_1
+...
+<span class="c1"># recipe for `target_N`</span>
+target_N: target_1 target_5
+        task_N
+</pre></div>
+</div>
+<ul class="simple">
+<li>Each entry in the Makefile is a recipe</li>
+<li>Simple syntax: <cite>target: dependencies</cite></li>
+<li><strong>Both targets and dependencies are considered files</strong></li>
+<li>Recipes define a DAG between targets and dependencies</li>
+</ul>
+
+
+
+<div class="slide-no">4</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id1">
+
+<h3>Make concepts (2)</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.11.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.11.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.11.png" style="width: 650px;" /></a>
+
+
+
+<div class="slide-no">5</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id2">
+
+<h3>Make concepts (3)</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.12.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.12.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.12.png" style="width: 600px;" /></a>
+<p>(assuming both parents exist)</p>
+<ol class="arabic simple">
+<li>If C exists –&gt; check if its timestamp is &lt; or &gt; than that of its parents. If “&lt;”, run C, else pass.</li>
+<li>If C doesn’t exist –&gt; run C.</li>
+</ol>
+
+
+
+<div class="slide-no">6</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id3">
+
+<h3>Make concepts (4)</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>.setup_done: environment.yml
+        conda env create --force -f environment.yml
+        mkdir -pv data
+        touch .setup_done
+</pre></div>
+</div>
+<ul class="simple">
+<li>Some tasks don’t generate files (ex: <cite>conda env create</cite>)</li>
+<li><strong>sentinel files</strong> are used to create recipes in this case</li>
+<li><cite>.setup_done</cite> is the <strong>sentinel file</strong> in the example</li>
+</ul>
+
+
+
+<div class="slide-no">7</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id4">
+
+<h3>Make concepts (5)</h3>
+
+<p>We may be tempted to add targets such as this one:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>train: data/model.tar.gz
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>which would not work if there happen to be a <cite>train</cite> file in your working directory. <cite>.PHONY</cite> targets</dt><dd>avoid this potential problem:</dd>
+</dl>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>.PHONY: train
+train: data/model.tar.gz
+</pre></div>
+</div>
+<p>And now <cite>make</cite> knows that <cite>train</cite> is always out-of-date.</p>
+
+
+
+<div class="slide-no">8</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="using-variables">
+
+<h3>Using variables</h3>
+
+<p>We can define variables within a Makefile</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nv">DATA_FOLDER</span> <span class="o">=</span> data/
+<span class="nv">ARTEFACT_PATH</span> <span class="o">=</span> <span class="k">$(</span>DATA_FOLDER<span class="k">)</span>/model.tar.gz
+train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
+</pre></div>
+</div>
+<p>We can even define them in a separate file and include them:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>include Makefile.conf <span class="c1"># Filename is irrelevant</span>
+train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
+</pre></div>
+</div>
+<p>where <cite>Makefile.conf</cite> would contain the variable definition</p>
+
+
+
+<div class="slide-no">9</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id5">
+
+<h3>Using variables (2)</h3>
+
+<p>A very useful feature are variables that can be passed as command-line arguments:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>DATA_FOLDER ?<span class="o">=</span> data/ <span class="c1"># Notice the &quot;?&quot; before the &quot;=&quot;</span>
+<span class="nv">ARTEFACT_PATH</span> <span class="o">=</span> <span class="k">$(</span>DATA_FOLDER<span class="k">)</span>/model.tar.gz
+train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
+</pre></div>
+</div>
+<p>And now we can do, for example</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;</span> make train <span class="nv">DATA_FOLDER</span><span class="o">=</span>/tmp/data
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">10</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="dry-run-seeing-the-execution-plan">
+
+<h3>Dry-run: seeing the execution plan</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simple example Makefile</span>
+.setup_done:
+        touch .setup_done
+
+data.gz: .setup_done
+        <span class="c1"># `$@` below is a &quot;special&quot; variable with the name of the target</span>
+        touch <span class="nv">$@</span>
+
+model.gz: data.gz
+        touch <span class="nv">$@</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> This will not run the targets but show you the execution plan
+<span class="gp">&gt;</span> make model.gz --dry-run
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">11</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="parallel-execution">
+
+<h3>Parallel execution</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>.setup_done:
+        touch .setup_done
+
+data_1.gz: .setup_done
+        touch <span class="nv">$@</span>
+
+data_2.gz: .setup_done
+        touch <span class="nv">$@</span>
+
+model.gz: data_1.gz data_2.gz
+        touch <span class="nv">$@</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> The order of execution might vary but it always respects the DAG
+<span class="gp">&gt;</span> make model.gz --jobs <span class="m">2</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">12</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="make-gotchas">
+
+<h3>Make gotchas</h3>
+
+<p>Sometimes <cite>make</cite>’s behavior can be a bit puzzling…</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.gnu.org/software/make/manual/make.html#Execution">Each line in a recipe = a different shell</a></li>
+<li><a class="reference external" href="https://www.gnu.org/software/make/manual/html_node/Errors.html">Stops on errors</a>, but by default doesn’t remove generated targets</li>
+<li>Directories are treated like files</li>
+<li>Multiple targets imply multiple invokations</li>
+</ul>
+<ul class="note simple">
+<li>A few good <a class="reference external" href="https://tech.davis-hansson.com/p/make/">tips &amp; tricks from Davis-Hansson</a></li>
+<li><a class="reference external" href="https://swcarpentry.github.io/make-novice/">Software Carpentry’s Make tutorial</a></li>
+<li><a class="reference external" href="https://www.gnu.org/software/make/manual/make.html">GNU make manual</a></li>
+</ul>
+
+
+
+<div class="slide-no">13</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="using-make-with-conda">
+
+<h3>Using Make with conda</h3>
+
+<p>Since <cite>Make</cite> spawns a new shell, our recipes would not run in the desired environment…</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CONDA_ROOT</span> <span class="o">=</span> /Users/arnau.tibau/miniconda3/
+<span class="nv">ENV_NAME</span> <span class="o">=</span> ml_in_prod
+<span class="nv">PIP</span> <span class="o">=</span> <span class="k">$(</span>CONDA_ROOT<span class="k">)</span>/envs/<span class="k">$(</span>ENV_NAME<span class="k">)</span>/bin/pip
+<span class="nv">PYTHON</span> <span class="o">=</span> <span class="k">$(</span>CONDA_ROOT<span class="k">)</span>/envs/<span class="k">$(</span>ENV_NAME<span class="k">)</span>/bin/python
+
+.setup_done:
+        <span class="c1"># Installs our package in the desired environment</span>
+        <span class="k">$(</span>PIP<span class="k">)</span> install -e .
+        touch .setup_done
+
+model.gz: data.gz
+        <span class="c1"># Runs the script under the right environment</span>
+        <span class="k">$(</span>PYTHON<span class="k">)</span> my_training_script.py data.gz
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">14</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="quizz">
+
+<h3>Quizz</h3>
+
+<p>What would this recipe do?</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>A B: C D
+        touch A
+        <span class="nb">echo</span> <span class="s2">&quot;B&quot;</span> &gt; B
+</pre></div>
+</div>
+<ol class="loweralpha simple">
+<li>This is not valid syntax</li>
+<li>It would generate two files (A and B) if C <em>OR</em> D’s state changes since last execution</li>
+<li>It would generate two files (A and B) if C <em>AND</em> D’s state changes since last execution</li>
+<li>A wonderful seafood rice</li>
+</ol>
+
+
+
+<div class="slide-no">15</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id6">
+
+<h3>Quizz (2)</h3>
+
+<p>Do these two Makefiles have the same behavior when you run <cite>make all</cite>?</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Makefile #1</span>
+A B: C
+        touch A
+        touch B
+all: A B
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Makefile #2</span>
+A: C
+        touch A
+B: C
+        touch B
+all: A B
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">16</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="practice-time">
+
+<h3>Practice time</h3>
+
+<p>Write a <cite>Makefile</cite> with at least:</p>
+<p>1. A <cite>setup</cite> target that creates a conda environment from the Yaml file we created in last chapter’s <em>Practice time</em>
+and runs the corresponding <cite>test_env.py</cite></p>
+<ol class="arabic simple" start="3">
+<li>A <cite>clean</cite> target that removes the created environment</li>
+<li><strong>BONUS</strong>: Read and try your luck with <a class="reference external" href="https://swcarpentry.github.io/make-novice/05-patterns/index.html">Pattern Rules</a></li>
+</ol>
+<p class="note">You can find inspiration in the capstone project <a class="reference external" href="https://github.com/mlinproduction/capstone/blob/master/2020/Makefile">Makefile</a></p>
+
+
+
+<div class="slide-no">17</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

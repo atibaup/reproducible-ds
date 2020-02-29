@@ -1,0 +1,210 @@
+.. 1.1.3 Project templates (10 slides - 20')
+	- why templates
+	- cookiecutter templates
+	- makefile basics (targets, dependencies, variables)
+	- Reproducible project templates with Makefiles, cookiecutter and conda
+	Ref: https://docs.google.com/presentation/d/1li1dQzJgXUCHXy5zsbzRq6PjVvKQ8UJqUMNollCcEGw/edit#slide=id.g5899cac9ca_0_589
+
+=================================
+Project templates
+=================================
+
+Templates
+================
+
+Most DS projects consist in similar workflows
+----------------------------------------------
+
+.. analysis workflow
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.13.png
+	:width: 700px
+	:align: center
+
+.. rst-class:: note
+
+	Example one-off data analysis workflow
+
+
+.. nextslide::
+	:increment:
+
+.. train/deploy workflow
+
+.. image:: /_static/1/Paper.ML_in_Prod_-_feb_2020.14.png
+	:width: 700px
+	:align: center
+
+.. rst-class:: note
+
+	Example train/deploy model workflow
+
+
+Example project structure
+---------------------------------------------------------------
+
+.. code-block:: Console
+
+	src/
+	.... package_name/ # package source
+	........ __init__.py
+	tests/ # package tests
+	data/ # input data and artefacts
+	.... raw/
+	.... processed/
+	.... artefacts/
+	bin/ # scripts
+	CI/ # CI/CD stuff
+	setup.py # setuptools for package
+	environment.yml # environment configuration
+	Makefile
+	.gitignore
+
+
+.. rst-class:: note
+
+	No one-size-fits-all: Different projects may warrant different structures
+
+.. nextslide::
+	:increment:
+
+* Promotes consistency & good practices
+
+* Facilitates review & reproducibility
+
+* Enables automation
+
+.. rst-class:: note
+
+	We can use tools like `cookiecutter <https://cookiecutter.readthedocs.io/en/1.7.0/>`_ or
+	`pyScaffold <https://pyscaffold.org/en/latest/>`_ to create and use templates
+	to reduce cognitive load
+
+
+cookiecutter Hello world!
+---------------------------
+
+.. code-block:: Bash
+
+	# Create a folder with these contents
+	hello_world_template/
+	...cookiecutter.json
+	...{{cookiecutter.directory_name}}/
+	......hello_world.py
+
+	# contents of hello_world.py
+	print("Hello, {{cookiecutter.your_name}}!")
+
+	# contents of cookiecutter.json
+	{"directory_name": "project_name", "your_name": "Arnau"}
+
+And now, magic:
+
+.. code-block:: Bash
+
+	# to create a new project
+	cookiecutter hello_world_template
+
+
+Recommendations
+---------------------------
+
+.. rst-class:: note
+
+	Organize your projects in a clear, consistent, meaningful manner
+
+
+1. **Clear**: each file and folder are easily understood from their context and name
+2. **Consistent**: every project follows the same logic, no surprises
+3. **Meaningful**: every choice has a proper motivation
+
+Other opinionated guidelines:
+
+* `Coding habits for Data Scientists <https://www.thoughtworks.com/insights/blog/coding-habits-data-scientists>`_
+
+* `Cookiecutter data-science Opinions <https://drivendata.github.io/cookiecutter-data-science/#opinions>`_
+
+
+cookiecutter: pre/post hooks
+-----------------------------
+
+You can automate certain pre/post-project setup tasks with
+Python or shell scripts:
+
+.. code-block:: Console
+
+	cookiecutter-something/
+	├── {{cookiecutter.project_name}}/
+	├── hooks
+	│   ├── pre_gen_project.py
+	│   └── post_gen_project.sh
+	└── cookiecutter.json
+
+Examples:
+
+* Pre-hook: checking that package name is valid
+* Post-hook: initializing git repo
+
+
+.. nextslide::
+	:increment:
+
+
+.. code-block:: Python
+
+	# Example pre_gen_project.py
+	import re
+	import sys
+	PACKAGE_REGEX = r'^[_a-zA-Z][_a-zA-Z0-9]+$'
+	if not re.match(PACKAGE_REGEX, {{ cookiecutter.package_name }}
+		sys.exit(1)
+
+.. code-block:: Bash
+
+	# Example pre_gen_project.sh
+	#!/usr/bin/env bash
+	echo "Initializing git repository..."
+	git init
+	# Commit project skeleton to the repository
+	git add * # or whatever we want to check-in
+	git commit -m '{{cookiecutter.module_name}} first commit'
+
+
+
+cookiecutter: Jinja Templates
+-----------------------------
+
+We can use Jinja templates in the `cookiecutter.json` **values**:
+
+.. code-block:: Bash
+
+	{
+	"mod_name": "",
+	"pkg_name": "{{ cookiecutter.mod_name|lower|replace(' ', '_')|replace('-', '_') }}",
+	"project_url": "https://github.com/atibaup/{{ cookiecutter.pkg_name }}",
+	"year": "{% now 'utc', '%Y' %}",
+	"_extensions": ["jinja2_time.TimeExtension"]
+	}
+
+
+Practice time: Build your own template!
+------------------------------------------
+
+
+Let's put together the three things we just learned: Set up your own project
+template with:
+
+1. Your favored project folder structure. You can find inspiration from
+`cookiecutter-data-science <https://github.com/drivendata/cookiecutter-data-science>`_,
+`cookiecutter-pypackage <https://github.com/audreyr/cookiecutter-pypackage>`_,
+or `an example from the 2019 edition <https://github.com/atibaup/reproducibility-course/tree/master/2_env_management/playtime/ds_template>`_.
+
+2. A Makefile with `setup`, `dataset` and `clean` targets, setting up
+the conda environment and installing the local module (if there is one)
+
+3. Pre-cookiecutter hooks to validate the cookiecutter variables
+
+4. Post-cookiecutter hooks to initialize a repository
+
+5. Bonus: set up `pre-commit hooks <https://pre-commit.com/#intro>`_
+

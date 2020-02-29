@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Environment management &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/slides.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2019.12.28',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="ML In Production 2020 edition 2019.12.28 documentation" href="../index.html" />
+    <link rel="next" title="3. Simple automation with Make" href="1_1_2_make.html" />
+    <link rel="prev" title="1. Reproducibility" href="1_1_0_intro.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="slide level-1" id="environment-management">
+
+<h1>Environment management</h1>
+
+
+
+
+<div class="slide-no">1</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-2" id="why-should-we-care">
+
+<h2>Why should we care?</h2>
+
+
+
+
+<div class="slide-no">2</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="how-we-typically-think-of-our-work">
+
+<h3>How we typically think of our work</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.1.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.1.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.1.png" style="width: 600px;" /></a>
+<p class="note">Data and source goes in: artefacts come out</p>
+
+
+
+<div class="slide-no">3</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="even-the-simplest-code-relies-on-many-other-things">
+
+<h3>Even the simplest code relies on many other things…</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.6.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.6.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.6.png" style="width: 600px;" /></a>
+
+
+
+<div class="slide-no">4</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="and-needs-to-run-on-different-environments">
+
+<h3>And needs to run on <em>different</em> environments</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.3.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.3.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.3.png" style="width: 500px;" /></a>
+<p class="note">How do we make sure we can <em>port</em> and <em>reproduce</em> the same results?</p>
+
+
+
+<div class="slide-no">5</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="how-we-should-think-of-our-work">
+
+<h3>How we <em>should</em> think of our work</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.2.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.2.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.2.png" style="width: 600px;" /></a>
+<p class="note">Is this an overkill? Are we overthinking it?</p>
+
+
+
+<div class="slide-no">6</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-2" id="python-dependency-management">
+
+<h2>Python dependency management</h2>
+
+
+
+
+<div class="slide-no">7</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="many-snakes">
+
+<h3>Many snakes…</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.8.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.8.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.8.png" style="width: 600px;" /></a>
+<p class="note">Many different pythons co-exist in a host… <cite>$PATH</cite> determines which one we run</p>
+
+
+
+<div class="slide-no">8</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="how-does-python-imports-libraries">
+
+<h3>How does Python imports libraries?</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><strong>built-in packages</strong> (<cite>import sys; sys.builtin_module_names</cite>)</li>
+<li>Current directory</li>
+<li>Rest of <strong>sys.path</strong> (which includes <cite>{python_root}/site-packages</cite></li>
+</ol>
+<p><em>Tip</em>: Use <cite>help(‘modules’)</cite> to find all installed packages</p>
+<p>Ref: <a class="reference external" href="https://docs.python.org/3/tutorial/modules.html#the-module-search-path">Python 3 doc: the module search path</a> and
+<a class="reference external" href="https://chrisyeh96.github.io/2017/08/08/definitive-guide-python-imports.html">Chris Yeh’s guide to import statements</a></p>
+
+
+
+<div class="slide-no">9</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="what-does-pip-install-do">
+
+<h3>What does <cite>pip install</cite> do?</h3>
+
+<ol class="arabic simple">
+<li>Looks for source or binary distribution in <a class="reference external" href="https://pypi.org/simple/">PyPi Index</a></li>
+<li>Discovers its dependencies</li>
+<li>Installs all packages (target + dependencies)</li>
+</ol>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">All third-party packages are <em>installed in</em> (“copied into”) the same folder <cite>{python_root}/site-packages</cite>!</p>
+</div>
+<p>Ref: <a class="reference external" href="https://dev.to/alexbecker/how-pip-install-works-323j">Alex Becker’s “How pip install works”</a></p>
+
+
+
+<div class="slide-no">10</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="example-numpy">
+
+<h3>Example: numpy</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.9.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.9.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.9.png" style="width: 600px;" /></a>
+<p><a class="reference external" href="https://pypi.org/simple/numpy/">https://pypi.org/simple/numpy</a></p>
+
+
+
+<div class="slide-no">11</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="pip-hell">
+
+<h3>Pip hell</h3>
+
+<p>Does anything like this sound familiar?</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; pip install google-cloud-storage==1.13.2
+
+ERROR: google-cloud-storage 1.13.2 has requirement XYZ
+but you&#39;ll have google-cloud-core 0.28.1 which is incompatible.
+</pre></div>
+</div>
+<p>Or this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&gt; pip install coolest-package
+
+... bla bla ...
+clang: error: unsupported option &#39;-fopenmp&#39;
+error: command &#39;gcc&#39; failed with exit status 1
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">12</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id2">
+
+<h3>Pip hell (2)</h3>
+
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/pip_Resolver.png"><img alt="../_images/pip_Resolver.png" src="../_images/pip_Resolver.png" style="width: 700px;" /></a>
+<p class="caption"><span class="caption-text"><a class="reference external" href="https://github.com/pypa/pip/issues/988">pip needs a dependency resolver #988</a></span></p>
+</div>
+
+
+
+<div class="slide-no">13</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="we-need-a-tool-to">
+
+<h3>We need a tool to:</h3>
+
+<ul class="simple">
+<li><strong>isolate</strong> dependencies across projects</li>
+<li>properly <strong>resolve</strong> transitive dependencies</li>
+<li>enable <strong>porting</strong> environment specifications from one host to another</li>
+</ul>
+
+
+
+<div class="slide-no">14</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="available-tools">
+
+<h3>Available tools</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.7.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.7.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.7.png" style="width: 650px;" /></a>
+
+
+
+<div class="slide-no">15</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-2" id="env-management-via-conda">
+
+<h2>Env Management via Conda</h2>
+
+
+
+
+<div class="slide-no">16</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="what-is-conda">
+
+<h3>What is conda?</h3>
+
+<ul class="simple">
+<li>A package manager (like <cite>pip</cite>) which can manage non-python stuff</li>
+<li>An environment manager (like <cite>venv</cite>) which can also manage different Python versions</li>
+<li>A proper dependency resolver (SAT checks)</li>
+<li>A disk-space saver (w.r.t venv’s)</li>
+</ul>
+
+
+
+<div class="slide-no">17</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="quick-foreplay">
+
+<h3>Quick foreplay</h3>
+
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda create -n vintage_env python=2.7
+
+conda activate vintage_env
+# now we are in a vintage 2.7 env
+
+# install your favorite package, for example:
+conda install pandas
+# inspect the output
+
+# run the python interpreter
+python # which version is it?
+
+conda deactivate
+# back to the base
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">18</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="you-can-port-conda-environments">
+
+<h3>You can port <cite>conda</cite> environments</h3>
+
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda env export --no-builds &gt; env.yml
+# I would recommend to manually edit `env.yml`:
+# 1) remove any possible native libraries (gloups!)
+# 2) and the `prefix` entry
+
+# now let&#39;s create an environment from those specs (will fail!)
+conda env create -f env.yml
+
+# clean-up:
+conda env remove -n env_name
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Envs ported like this are <strong>not</strong> fully reproducible: different builds + different native libraries –&gt; different output</p>
+</div>
+
+
+
+<div class="slide-no">19</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="you-can-manage-non-python-dependencies">
+
+<h3>You can manage non-python dependencies</h3>
+
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda install git
+</pre></div>
+</div>
+<p>…but you may need to use esoteric channels:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda config --add channels new_channel
+</pre></div>
+</div>
+<p>which you can find by searching in <a class="reference external" href="Anaconda.org">Anaconda.org</a>.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.slideshare.net/continuumio/conda-tips-and-tricks-anacondacon-2018">Conda tips &amp; tricks, Kale Franz</a></li>
+<li><a class="reference external" href="https://kapeli.com/cheat_sheets/Conda.docset/Contents/Resources/Documents/index">Conda cheatsheet</a></li>
+</ul>
+
+
+
+<div class="slide-no">20</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="you-can-continue-using-pip-with-care">
+
+<h3>You can continue using pip… with care</h3>
+
+<ul class="simple">
+<li>use it only in dedicated environments (not base)</li>
+<li>install all packages available in conda channels first, then use pip</li>
+<li>conda will be unaware of dependencies of stuff installed via pip</li>
+</ul>
+<p>More info: <a class="reference external" href="https://www.anaconda.com/using-pip-in-a-conda-environment/">Using Pip in a Conda Environment</a></p>
+<p class="note"><cite>conda</cite> doesn’t know how to manage <cite>pip</cite> dependencies ==&gt; no proper dependency resolution for <cite>pip</cite>-installed packages</p>
+
+
+
+<div class="slide-no">21</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="conda-envs-limitations">
+
+<h3>conda envs limitations</h3>
+
+<ul class="simple">
+<li>Conda packages are not always bleeding-edge (ex: tensorflow 1.13 up till Feb 2020)</li>
+<li>You still need to manually manage different <cite>dev</cite> and <cite>pro</cite> environment specs</li>
+<li>Yaml specs are not cross-platform portable</li>
+<li>Using <cite>pip</cite> can get you in trouble</li>
+</ul>
+
+
+
+<div class="slide-no">22</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="quizz">
+
+<h3>Quizz</h3>
+
+<ol class="arabic simple">
+<li>Where is <cite>conda</cite> installing your packages?</li>
+<li>What do you think <cite>which python</cite> returns from within a conda env?</li>
+<li>What do you think <cite>echo $PATH</cite> returns from within a conda env?</li>
+</ol>
+
+
+
+<div class="slide-no">23</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="practice-time">
+
+<h3>Practice time!</h3>
+
+<ol class="arabic simple">
+<li>Create a new conda env for Python 3.7.3 named <cite>practice_env</cite></li>
+<li>Install Flask 1.1.1, Tensorflow 2.1, pandas 1.0, scikit-learn 0.22.1</li>
+<li>Write a <cite>test_env.py</cite> that verifies import correctness</li>
+<li>Export the environment and send it to the person on your right</li>
+<li>Create a new environment from the environment sent to you by the person to your left</li>
+</ol>
+<p><strong>BONUS</strong>: Create a jupyter notebook kernel linked to this new environment</p>
+
+
+
+<div class="slide-no">24</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="additional-resources">
+
+<h3>Additional resources</h3>
+
+<ul class="simple">
+<li><a class="reference external" href="https://www.anaconda.com/understanding-conda-and-pip/">Understanding conda and pip</a></li>
+<li><a class="reference external" href="https://realpython.com/what-is-pip/">What is pip?</a></li>
+</ul>
+
+
+
+<div class="slide-no">25</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>

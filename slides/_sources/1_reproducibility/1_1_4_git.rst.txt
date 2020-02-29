@@ -1,0 +1,8 @@
+1.1.4. Git (30 slides - 45')
+
+- what is git
+- 3/4 stages of files in a repo
+- working w/ branches
+- merging & rebasing
+- Pull Requests
+- good practices
