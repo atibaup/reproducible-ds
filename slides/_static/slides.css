@@ -113,6 +113,10 @@ div.warning {
 
 /* better highlighted code */
 
+table.highlighttable {
+    margin-top: -1em;
+}
+
 table.highlighttable td {
     border: none;
 }
@@ -135,6 +139,7 @@ table.highlighttable td.linenos pre {
 
 .literal.code {
     background-color: #EEE;
+    margin-top: 0em;
 }
 
 
@@ -143,4 +148,8 @@ table.highlighttable td.linenos pre {
 .big > .highlight > pre, .big > pre {
     max-height: 500px;
     overflow: auto;
+}
+
+strong {
+	color: black;
 }

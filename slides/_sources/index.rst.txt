@@ -16,20 +16,18 @@ Table of Contents
    :maxdepth: 3
    :numbered:
 
-   1_reproducibility/1_1_0_intro
    1_reproducibility/1_1_1_conda
    1_reproducibility/1_1_2_make
    1_reproducibility/1_1_3_project_templates
 
 
-.. slide:: Indices and tables
+.. slide:: ML In Prod 2020: Reproducible DS
    :level: 3
 
    .. toctree::
       :maxdepth: 1
       :numbered:
 
-      1_reproducibility/1_1_0_intro
       1_reproducibility/1_1_1_conda
       1_reproducibility/1_1_2_make
       1_reproducibility/1_1_3_project_templates

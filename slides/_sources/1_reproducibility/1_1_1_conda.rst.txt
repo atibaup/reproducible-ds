@@ -298,6 +298,47 @@ Quizz
 3. What do you think `echo $PATH` returns from within a conda env?
 
 
+Quizz (solution)
+----------------------
+
+1. Where is `conda` installing your packages?
+
+.. code-block:: Bash
+
+	> which conda
+	/Users/arnau.tibau/miniconda3/condabin/conda
+	# my conda root is at `/Users/arnau.tibau/miniconda3`.
+	# the environments are in the `envs` folder
+	> ls /Users/arnau.tibau/miniconda3/envs/
+	# for a given environment, the Python packages are in
+	# their corresponding site-packages:
+	> ls /path/to/envs/ml_in_prod/lib/python3.7/site-packages/
+
+.. nextslide::
+	:increment:
+
+
+2. What do you think `which python` returns from within a conda env?
+
+.. code-block:: Bash
+
+	(ml_in_prod) > which python
+	/Users/arnau.tibau/miniconda3/envs/ml_in_prod/bin/python
+
+
+.. nextslide::
+	:increment:
+
+3. What do you think `echo $PATH` returns from within a conda env?
+
+.. code-block:: Bash
+
+	# $PATH's first element is the conda env bin folder
+	> echo $PATH
+	/Users/arnau.tibau/miniconda3/envs/ml_in_prod/bin: ....
+
+
+
 Practice time!
 --------------
 
@@ -313,6 +354,64 @@ Practice time!
 
 **BONUS**: Create a jupyter notebook kernel linked to this new environment
 
+
+Practice time (solution)
+-------------------------
+
+1. Create a new conda env for Python 3.7.3 named `practice_env`
+
+2. Install Flask 1.1.1, Tensorflow 2.1, pandas 1.0, scikit-learn 0.22.1
+
+
+.. code-block:: Bash
+
+	conda create -n practice_env Python=3.7.3
+	conda activate practice_env
+	# Tensorflow 2.1 is not available for macOS in any conda channel,
+	# so we skip it for now
+	conda install flask=1.1.1 pandas=1.0 scikit-learn=0.22.1
+	# We install Tensorflow 2.1 from pip
+	pip install tensorflow==2.1
+
+
+.. nextslide::
+	:increment:
+
+3) Write a `test_env.py` that verifies import correctness
+
+.. literalinclude:: example.py
+	:language: python
+	:linenos:
+	:lines: 6-19
+
+.. nextslide::
+	:increment:
+
+4. Export the environment
+
+.. code-block:: Bash
+
+	conda env export > practice_env.yml
+
+5. Create a new environment from the environment sent to you
+
+.. code-block:: Bash
+
+	# note we give it a different name so as to not override our own
+	conda env create -f practice_env.yml -n other_practice_env
+
+
+.. nextslide::
+	:increment:
+
+
+**BONUS**: Create a jupyter kernel linked to `practice_env`
+
+.. code-block:: Bash
+
+	conda activate practice_env
+	conda install ipykernel
+	ipython kernel install --user --name=practice_env
 
 Additional resources
 --------------------

@@ -121,6 +121,7 @@ We can define variables within a Makefile
 
 	DATA_FOLDER = data/
 	ARTEFACT_PATH = $(DATA_FOLDER)/model.tar.gz
+	.PHONY: train
 	train: $(ARTEFACT_PATH)
 
 We can even define them in a separate file and include them:
@@ -128,6 +129,7 @@ We can even define them in a separate file and include them:
 .. code-block:: Bash
 
 	include Makefile.conf # Filename is irrelevant
+	.PHONY: train
 	train: $(ARTEFACT_PATH)
 
 where `Makefile.conf` would contain the variable definition
@@ -144,6 +146,7 @@ A very useful feature are variables that can be passed as command-line arguments
 
 	DATA_FOLDER ?= data/ # Notice the "?" before the "="
 	ARTEFACT_PATH = $(DATA_FOLDER)/model.tar.gz
+	.PHONY: train
 	train: $(ARTEFACT_PATH)
 
 And now we can do, for example
@@ -172,7 +175,7 @@ Dry-run: seeing the execution plan
 
 .. code-block:: console
 
-	# This will not run the targets but show you the execution plan
+	# This will not run the targets but will show you the execution plan
 	> make model.gz --dry-run
 
 Parallel execution
@@ -220,26 +223,27 @@ Sometimes `make`'s behavior can be a bit puzzling...
 Using Make with conda
 ----------------------
 
-Since `Make` spawns a new shell, our recipes would not run in the desired environment...
+Since `Make` spawns a new shell, we need to explicitly use the python from our conda env:
 
 .. code-block:: Bash
 
+	# replace with your conda root folder:
 	CONDA_ROOT = /Users/arnau.tibau/miniconda3/
 	ENV_NAME = ml_in_prod
 	PIP = $(CONDA_ROOT)/envs/$(ENV_NAME)/bin/pip
 	PYTHON = $(CONDA_ROOT)/envs/$(ENV_NAME)/bin/python
-
 	.setup_done:
+		# let's simulate us having our own package
+		echo "from setuptools import setup; setup()" > setup.py
 		# Installs our package in the desired environment
 		$(PIP) install -e .
 		touch .setup_done
-
 	model.gz: data.gz
 		# Runs the script under the right environment
 		$(PYTHON) my_training_script.py data.gz
 
 
-Quizz
+Quizz I
 ---------------
 
 What would this recipe do?
@@ -259,8 +263,28 @@ c) It would generate two files (A and B) if C *AND* D's state changes since last
 d) A wonderful seafood rice
 
 
-.. nextslide::
-	:increment:
+Quizz I: solution
+-----------------
+
+What would this recipe do?
+
+.. code-block:: Bash
+
+	A B: C D
+		touch A
+		echo "B" > B
+
+a) This is not valid syntax
+
+**b) It would generate two files (A and B) if C *OR* D's state changes since last execution**
+
+c) It would generate two files (A and B) if C *AND* D's state changes since last execution
+
+d) A wonderful seafood rice
+
+
+Quizz II
+-----------------
 
 Do these two Makefiles have the same behavior when you run `make all`?
 
@@ -282,6 +306,30 @@ Do these two Makefiles have the same behavior when you run `make all`?
 	all: A B
 
 
+Quizz II: solution
+------------------
+
+Do these two Makefiles have the same behavior when you run `make all`? **No!**
+
+.. code-block:: Bash
+
+	# Generates A and B whenever C changes
+	A B: C
+		touch A
+		touch B
+	all: A B
+
+.. code-block:: Bash
+
+	# Generates A or B whenever C changes, depending
+	# on whether A or B are up-to-date
+	A: C
+		touch A
+	B: C
+		touch B
+	all: A B
+
+
 Practice time
 ----------------------
 
@@ -290,10 +338,70 @@ Write a `Makefile` with at least:
 1. A `setup` target that creates a conda environment from the Yaml file we created in last chapter's *Practice time*
 and runs the corresponding `test_env.py`
 
-3. A `clean` target that removes the created environment
+2. A `clean` target that removes the created environment
 
-4. **BONUS**: Read and try your luck with `Pattern Rules <https://swcarpentry.github.io/make-novice/05-patterns/index.html>`_
+3. **BONUS**: Read and try your luck with `Pattern Rules <https://swcarpentry.github.io/make-novice/05-patterns/index.html>`_
 
 .. rst-class:: note
 
 	You can find inspiration in the capstone project `Makefile <https://github.com/mlinproduction/capstone/blob/master/2020/Makefile>`_
+
+
+Practice time (solution)
+------------------------
+
+1. A `setup` target that creates a conda environment [...]
+
+.. code-block:: Bash
+
+	SHELL := bash
+	.ONESHELL: # instructs make to use the same shell within a recipe
+	.SHELLFLAGS := -eu -o pipefail -c # a few recommended shell flags
+
+	ENV_NAME ?= practice_env
+	CONDA_ROOT =? /Users/arnau.tibau/miniconda3/
+	PYTHON = $(CONDA_ROOT)/envs/$(ENV_NAME)/bin/python
+
+	.setup_done: environment.yml
+		echo "Creating and testing environment"
+		conda env create --force -f environment.yml -n $(ENV_NAME)
+		$(PYTHON) test_env.py
+		touch .setup_done
+
+	.PHONY: setup
+	setup: .setup_done
+
+.. nextslide::
+	:increment:
+
+2. A `clean` target that removes the created environment
+
+.. code-block:: Bash
+
+	.PHONY: clean
+	clean: .setup_done
+		echo "Cleaning up environment $(ENV_NAME)..."
+		conda env remove -n $(ENV_NAME)
+		rm .setup_done
+
+.. nextslide::
+	:increment:
+
+3. **BONUS**: Read and try your luck with `Pattern Rules <https://swcarpentry.github.io/make-novice/05-patterns/index.html>`_
+
+
+.. code-block:: Bash
+
+	# let's download a couple files
+	download_data:
+		wget https://www.w3.org/TR/PNG/iso_8859-1.txt http://humanstxt.org/humans.txt
+
+	# this will generate a .words file for each .txt file
+	%.words : %.txt
+		# the `$<` variable refers to the dependency
+		# the `$@` variable refers to the target
+		cat $< | wc -w > $@
+
+	CODE = "import sys;print(sum(int(open(v).read()) for v in sys.argv[1:]))"
+	summary : iso_8859-1.words humans.words
+		python -c  $(CODE) $(wildcard *.words) > $@

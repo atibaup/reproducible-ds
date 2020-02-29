@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>3. Simple automation with Make &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
+    <title>2. Simple automation with Make &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
@@ -39,8 +39,8 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="ML In Production 2020 edition 2019.12.28 documentation" href="../index.html" />
-    <link rel="next" title="4. Project templates" href="1_1_3_project_templates.html" />
-    <link rel="prev" title="2. Environment management" href="1_1_1_conda.html" /> 
+    <link rel="next" title="3. Project templates" href="1_1_3_project_templates.html" />
+    <link rel="prev" title="1. Environment management" href="1_1_1_conda.html" /> 
   </head>
   <body>
 
@@ -133,7 +133,7 @@ target_N: target_1 target_5
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
 
 </article>
-<article class="slide level-3" id="id1">
+<article class="slide level-3" id="id2">
 
 <h3>Make concepts (2)</h3>
 
@@ -147,7 +147,7 @@ target_N: target_1 target_5
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
 
 </article>
-<article class="slide level-3" id="id2">
+<article class="slide level-3" id="id3">
 
 <h3>Make concepts (3)</h3>
 
@@ -166,7 +166,7 @@ target_N: target_1 target_5
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
 
 </article>
-<article class="slide level-3" id="id3">
+<article class="slide level-3" id="id4">
 
 <h3>Make concepts (4)</h3>
 
@@ -190,7 +190,7 @@ target_N: target_1 target_5
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
 
 </article>
-<article class="slide level-3" id="id4">
+<article class="slide level-3" id="id5">
 
 <h3>Make concepts (5)</h3>
 
@@ -222,11 +222,13 @@ train: data/model.tar.gz
 <p>We can define variables within a Makefile</p>
 <div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nv">DATA_FOLDER</span> <span class="o">=</span> data/
 <span class="nv">ARTEFACT_PATH</span> <span class="o">=</span> <span class="k">$(</span>DATA_FOLDER<span class="k">)</span>/model.tar.gz
+.PHONY: train
 train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
 </pre></div>
 </div>
 <p>We can even define them in a separate file and include them:</p>
 <div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>include Makefile.conf <span class="c1"># Filename is irrelevant</span>
+.PHONY: train
 train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
 </pre></div>
 </div>
@@ -240,13 +242,14 @@ train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
 
 </article>
-<article class="slide level-3" id="id5">
+<article class="slide level-3" id="id6">
 
 <h3>Using variables (2)</h3>
 
 <p>A very useful feature are variables that can be passed as command-line arguments:</p>
 <div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>DATA_FOLDER ?<span class="o">=</span> data/ <span class="c1"># Notice the &quot;?&quot; before the &quot;=&quot;</span>
 <span class="nv">ARTEFACT_PATH</span> <span class="o">=</span> <span class="k">$(</span>DATA_FOLDER<span class="k">)</span>/model.tar.gz
+.PHONY: train
 train: <span class="k">$(</span>ARTEFACT_PATH<span class="k">)</span>
 </pre></div>
 </div>
@@ -279,7 +282,7 @@ model.gz: data.gz
         touch <span class="nv">$@</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> This will not run the targets but show you the execution plan
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> This will not run the targets but will show you the execution plan
 <span class="gp">&gt;</span> make model.gz --dry-run
 </pre></div>
 </div>
@@ -351,17 +354,18 @@ model.gz: data_1.gz data_2.gz
 
 <h3>Using Make with conda</h3>
 
-<p>Since <cite>Make</cite> spawns a new shell, our recipes would not run in the desired environment…</p>
-<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CONDA_ROOT</span> <span class="o">=</span> /Users/arnau.tibau/miniconda3/
+<p>Since <cite>Make</cite> spawns a new shell, we need to explicitly use the python from our conda env:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># replace with your conda root folder:</span>
+<span class="nv">CONDA_ROOT</span> <span class="o">=</span> /Users/arnau.tibau/miniconda3/
 <span class="nv">ENV_NAME</span> <span class="o">=</span> ml_in_prod
 <span class="nv">PIP</span> <span class="o">=</span> <span class="k">$(</span>CONDA_ROOT<span class="k">)</span>/envs/<span class="k">$(</span>ENV_NAME<span class="k">)</span>/bin/pip
 <span class="nv">PYTHON</span> <span class="o">=</span> <span class="k">$(</span>CONDA_ROOT<span class="k">)</span>/envs/<span class="k">$(</span>ENV_NAME<span class="k">)</span>/bin/python
-
 .setup_done:
+        <span class="c1"># let&#39;s simulate us having our own package</span>
+        <span class="nb">echo</span> <span class="s2">&quot;from setuptools import setup; setup()&quot;</span> &gt; setup.py
         <span class="c1"># Installs our package in the desired environment</span>
         <span class="k">$(</span>PIP<span class="k">)</span> install -e .
         touch .setup_done
-
 model.gz: data.gz
         <span class="c1"># Runs the script under the right environment</span>
         <span class="k">$(</span>PYTHON<span class="k">)</span> my_training_script.py data.gz
@@ -376,9 +380,9 @@ model.gz: data.gz
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
 
 </article>
-<article class="slide level-3" id="quizz">
+<article class="slide level-3" id="quizz-i">
 
-<h3>Quizz</h3>
+<h3>Quizz I</h3>
 
 <p>What would this recipe do?</p>
 <div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>A B: C D
@@ -401,9 +405,36 @@ model.gz: data.gz
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
 
 </article>
-<article class="slide level-3" id="id6">
+<article class="slide level-3" id="quizz-i-solution">
 
-<h3>Quizz (2)</h3>
+<h3>Quizz I: solution</h3>
+
+<p>What would this recipe do?</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>A B: C D
+        touch A
+        <span class="nb">echo</span> <span class="s2">&quot;B&quot;</span> &gt; B
+</pre></div>
+</div>
+<ol class="loweralpha simple">
+<li>This is not valid syntax</li>
+</ol>
+<p><strong>b) It would generate two files (A and B) if C *OR* D’s state changes since last execution</strong></p>
+<ol class="loweralpha simple" start="3">
+<li>It would generate two files (A and B) if C <em>AND</em> D’s state changes since last execution</li>
+<li>A wonderful seafood rice</li>
+</ol>
+
+
+
+<div class="slide-no">16</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="quizz-ii">
+
+<h3>Quizz II</h3>
 
 <p>Do these two Makefiles have the same behavior when you run <cite>make all</cite>?</p>
 <div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Makefile #1</span>
@@ -424,7 +455,37 @@ all: A B
 
 
 
-<div class="slide-no">16</div>
+<div class="slide-no">17</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="quizz-ii-solution">
+
+<h3>Quizz II: solution</h3>
+
+<p>Do these two Makefiles have the same behavior when you run <cite>make all</cite>? <strong>No!</strong></p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generates A and B whenever C changes</span>
+A B: C
+        touch A
+        touch B
+all: A B
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generates A or B whenever C changes, depending</span>
+<span class="c1"># on whether A or B are up-to-date</span>
+A: C
+        touch A
+B: C
+        touch B
+all: A B
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">18</div>
 
 
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
@@ -437,7 +498,7 @@ all: A B
 <p>Write a <cite>Makefile</cite> with at least:</p>
 <p>1. A <cite>setup</cite> target that creates a conda environment from the Yaml file we created in last chapter’s <em>Practice time</em>
 and runs the corresponding <cite>test_env.py</cite></p>
-<ol class="arabic simple" start="3">
+<ol class="arabic simple" start="2">
 <li>A <cite>clean</cite> target that removes the created environment</li>
 <li><strong>BONUS</strong>: Read and try your luck with <a class="reference external" href="https://swcarpentry.github.io/make-novice/05-patterns/index.html">Pattern Rules</a></li>
 </ol>
@@ -445,7 +506,95 @@ and runs the corresponding <cite>test_env.py</cite></p>
 
 
 
-<div class="slide-no">17</div>
+<div class="slide-no">19</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="practice-time-solution">
+
+<h3>Practice time (solution)</h3>
+
+<ol class="arabic simple">
+<li>A <cite>setup</cite> target that creates a conda environment […]</li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>SHELL :<span class="o">=</span> bash
+.ONESHELL: <span class="c1"># instructs make to use the same shell within a recipe</span>
+.SHELLFLAGS :<span class="o">=</span> -eu -o pipefail -c <span class="c1"># a few recommended shell flags</span>
+
+ENV_NAME ?<span class="o">=</span> practice_env
+<span class="nv">CONDA_ROOT</span> <span class="o">=</span>? /Users/arnau.tibau/miniconda3/
+<span class="nv">PYTHON</span> <span class="o">=</span> <span class="k">$(</span>CONDA_ROOT<span class="k">)</span>/envs/<span class="k">$(</span>ENV_NAME<span class="k">)</span>/bin/python
+
+.setup_done: environment.yml
+        <span class="nb">echo</span> <span class="s2">&quot;Creating and testing environment&quot;</span>
+        conda env create --force -f environment.yml -n <span class="k">$(</span>ENV_NAME<span class="k">)</span>
+        <span class="k">$(</span>PYTHON<span class="k">)</span> test_env.py
+        touch .setup_done
+
+.PHONY: setup
+setup: .setup_done
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">20</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id7">
+
+<h3>Practice time (solution) (2)</h3>
+
+<ol class="arabic simple" start="2">
+<li>A <cite>clean</cite> target that removes the created environment</li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>.PHONY: clean
+clean: .setup_done
+        <span class="nb">echo</span> <span class="s2">&quot;Cleaning up environment </span><span class="k">$(</span>ENV_NAME<span class="k">)</span><span class="s2">...&quot;</span>
+        conda env remove -n <span class="k">$(</span>ENV_NAME<span class="k">)</span>
+        rm .setup_done
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">21</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id8">
+
+<h3>Practice time (solution) (3)</h3>
+
+<ol class="arabic simple" start="3">
+<li><strong>BONUS</strong>: Read and try your luck with <a class="reference external" href="https://swcarpentry.github.io/make-novice/05-patterns/index.html">Pattern Rules</a></li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># let&#39;s download a couple files</span>
+download_data:
+        wget https://www.w3.org/TR/PNG/iso_8859-1.txt http://humanstxt.org/humans.txt
+
+<span class="c1"># this will generate a .words file for each .txt file</span>
+%.words : %.txt
+        <span class="c1"># the `$&lt;` variable refers to the dependency</span>
+        <span class="c1"># the `$@` variable refers to the target</span>
+        cat $&lt; <span class="p">|</span> wc -w &gt; <span class="nv">$@</span>
+
+<span class="nv">CODE</span> <span class="o">=</span> <span class="s2">&quot;import sys;print(sum(int(open(v).read()) for v in sys.argv[1:]))&quot;</span>
+summary : iso_8859-1.words humans.words
+        python -c  <span class="k">$(</span>CODE<span class="k">)</span> <span class="k">$(</span>wildcard *.words<span class="k">)</span> &gt; <span class="nv">$@</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">22</div>
 
 
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>

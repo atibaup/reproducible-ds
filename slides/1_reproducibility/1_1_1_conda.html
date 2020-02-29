@@ -5,7 +5,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>2. Environment management &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
+    <title>1. Environment management &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
     
     <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
@@ -39,8 +39,8 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="top" title="ML In Production 2020 edition 2019.12.28 documentation" href="../index.html" />
-    <link rel="next" title="3. Simple automation with Make" href="1_1_2_make.html" />
-    <link rel="prev" title="1. Reproducibility" href="1_1_0_intro.html" /> 
+    <link rel="next" title="2. Simple automation with Make" href="1_1_2_make.html" />
+    <link rel="prev" title="Welcome to ML In Production 2020 edition’s documentation!" href="../index.html" /> 
   </head>
   <body>
 
@@ -474,6 +474,73 @@ conda env remove -n env_name
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
 
 </article>
+<article class="slide level-3" id="quizz-solution">
+
+<h3>Quizz (solution)</h3>
+
+<ol class="arabic simple">
+<li>Where is <cite>conda</cite> installing your packages?</li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; which conda
+/Users/arnau.tibau/miniconda3/condabin/conda
+<span class="c1"># my conda root is at `/Users/arnau.tibau/miniconda3`.</span>
+<span class="c1"># the environments are in the `envs` folder</span>
+&gt; ls /Users/arnau.tibau/miniconda3/envs/
+<span class="c1"># for a given environment, the Python packages are in</span>
+<span class="c1"># their corresponding site-packages:</span>
+&gt; ls /path/to/envs/ml_in_prod/lib/python3.7/site-packages/
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">24</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id3">
+
+<h3>Quizz (solution) (2)</h3>
+
+<ol class="arabic simple" start="2">
+<li>What do you think <cite>which python</cite> returns from within a conda env?</li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>ml_in_prod<span class="o">)</span> &gt; which python
+/Users/arnau.tibau/miniconda3/envs/ml_in_prod/bin/python
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">25</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id4">
+
+<h3>Quizz (solution) (3)</h3>
+
+<ol class="arabic simple" start="3">
+<li>What do you think <cite>echo $PATH</cite> returns from within a conda env?</li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># $PATH&#39;s first element is the conda env bin folder</span>
+&gt; <span class="nb">echo</span> <span class="nv">$PATH</span>
+/Users/arnau.tibau/miniconda3/envs/ml_in_prod/bin: ....
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">26</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
 <article class="slide level-3" id="practice-time">
 
 <h3>Practice time!</h3>
@@ -489,7 +556,123 @@ conda env remove -n env_name
 
 
 
-<div class="slide-no">24</div>
+<div class="slide-no">27</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="practice-time-solution">
+
+<h3>Practice time (solution)</h3>
+
+<ol class="arabic simple">
+<li>Create a new conda env for Python 3.7.3 named <cite>practice_env</cite></li>
+<li>Install Flask 1.1.1, Tensorflow 2.1, pandas 1.0, scikit-learn 0.22.1</li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>conda create -n practice_env <span class="nv">Python</span><span class="o">=</span><span class="m">3</span>.7.3
+conda activate practice_env
+<span class="c1"># Tensorflow 2.1 is not available for macOS in any conda channel,</span>
+<span class="c1"># so we skip it for now</span>
+conda install <span class="nv">flask</span><span class="o">=</span><span class="m">1</span>.1.1 <span class="nv">pandas</span><span class="o">=</span><span class="m">1</span>.0 scikit-learn<span class="o">=</span><span class="m">0</span>.22.1
+<span class="c1"># We install Tensorflow 2.1 from pip</span>
+pip install <span class="nv">tensorflow</span><span class="o">==</span><span class="m">2</span>.1
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">28</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id5">
+
+<h3>Practice time (solution) (2)</h3>
+
+<ol class="arabic simple" start="3">
+<li>Write a <cite>test_env.py</cite> that verifies import correctness</li>
+</ol>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1"># Example solution for env_test.py</span>
+<span class="c1"># (only testing `pandas`)</span>
+<span class="k">def</span> <span class="nf">test_pandas</span><span class="p">():</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]})</span>
+
+<span class="n">tests</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pandas&#39;</span><span class="p">:</span> <span class="n">test_pandas</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">tests</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">test</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error! Tests failed for </span><span class="si">{name}</span><span class="s2">: </span><span class="si">{e}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OK: Tests passed for </span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+
+
+
+<div class="slide-no">29</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id6">
+
+<h3>Practice time (solution) (3)</h3>
+
+<ol class="arabic simple" start="4">
+<li>Export the environment</li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>conda env <span class="nb">export</span> &gt; practice_env.yml
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li>Create a new environment from the environment sent to you</li>
+</ol>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># note we give it a different name so as to not override our own</span>
+conda env create -f practice_env.yml -n other_practice_env
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">30</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id7">
+
+<h3>Practice time (solution) (4)</h3>
+
+<p><strong>BONUS</strong>: Create a jupyter kernel linked to <cite>practice_env</cite></p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>conda activate practice_env
+conda install ipykernel
+ipython kernel install --user --name<span class="o">=</span>practice_env
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">31</div>
 
 
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
@@ -506,7 +689,7 @@ conda env remove -n env_name
 
 
 
-<div class="slide-no">25</div>
+<div class="slide-no">32</div>
 
 
 <div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
