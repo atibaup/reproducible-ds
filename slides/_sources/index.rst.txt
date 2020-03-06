@@ -19,6 +19,7 @@ Table of Contents
    1_reproducibility/1_1_1_conda
    1_reproducibility/1_1_2_make
    1_reproducibility/1_1_3_project_templates
+   2_python/python
 
 
 .. slide:: ML In Prod 2020: Reproducible DS
@@ -31,4 +32,11 @@ Table of Contents
       1_reproducibility/1_1_1_conda
       1_reproducibility/1_1_2_make
       1_reproducibility/1_1_3_project_templates
+      2_python/python
+
+   © Arnau Tibau Puig, 2020
+
+   `LICENSE <https://github.com/atibaup/reproducible-ds/blob/master/LICENSE>`_
+
+   Materials for the `ML in Production 2020 training <https://mlinproduction.github.io/>`_, Barcelona, Spain
 

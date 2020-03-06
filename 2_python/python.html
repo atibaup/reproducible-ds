@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>4. Programming in Python for DS &#8212; ML In Production 2020 edition 2019.12.28 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="3. Project templates" href="../1_reproducibility/1_1_3_project_templates.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="programming-in-python-for-ds">
+<h1><span class="section-number">4. </span>Programming in Python for DS<a class="headerlink" href="#programming-in-python-for-ds" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="oop-in-python">
+<h2><span class="section-number">4.1. </span>OOP in Python<a class="headerlink" href="#oop-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="classes-and-objects">
+<h3><span class="section-number">4.1.1. </span>Classes and objects<a class="headerlink" href="#classes-and-objects" title="Permalink to this headline">¶</a></h3>
+<p>Here’s the simplest possible class</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span> <span class="k">pass</span>
+</pre></div>
+</div>
+<p>When we “call” a class, we <strong>instantiate</strong>
+it, returning an <strong>object</strong> of type <cite>Foo</cite> (also known as <cite>class instance</cite>):</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span>&gt; foo = Foo()
+&gt; type(foo)
+&lt;class &#39;__main__.Foo&#39;&gt;
+</pre></div>
+</div>
+<p>In Python, <strong>everything is an object</strong>. Try for instance:</p>
+<ul class="simple">
+<li><p><cite>type(int)</cite>: built-in types</p></li>
+<li><p><cite>type(Foo)</cite>: classes</p></li>
+<li><p><cite>type(foo)</cite>: instances of classes</p></li>
+<li><p><cite>type(ValueError)</cite>: exceptions</p></li>
+<li><p><cite>type((_ for _ in range(10)))</cite>: other built-in types, like generators</p></li>
+<li><p><cite>type(lambda x: 2*x)</cite>: functions</p></li>
+</ul>
+</div>
+<div class="section" id="classes-have-members">
+<h3><span class="section-number">4.1.2. </span>Classes have members<a class="headerlink" href="#classes-have-members" title="Permalink to this headline">¶</a></h3>
+<p>Class members are either:</p>
+<ul class="simple">
+<li><p><strong>Atributes</strong> - properties stored in the class or its instances</p></li>
+<li><p><strong>Methods</strong> - functions associated to the class or its instances</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span> <span class="c1"># inspects an object members</span>
+<span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="s1">&#39;__delattr__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dir__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__eq__&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;__format__&#39;</span><span class="p">,</span> <span class="s1">&#39;__ge__&#39;</span><span class="p">,</span> <span class="s1">&#39;__getattribute__&#39;</span><span class="p">,</span> <span class="s1">&#39;__gt__&#39;</span><span class="p">,</span> <span class="s1">&#39;__hash__&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">,</span>
+  <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p class="note">We haven’t defined any attributes or methods and yet our class already has many…</p>
+<p>All Python (3+) classes implicitly inherit from <cite>object</cite>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">o</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="s1">&#39;__delattr__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dir__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__eq__&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;__format__&#39;</span><span class="p">,</span> <span class="s1">&#39;__ge__&#39;</span><span class="p">,</span> <span class="s1">&#39;__getattribute__&#39;</span><span class="p">,</span> <span class="s1">&#39;__gt__&#39;</span><span class="p">,</span> <span class="s1">&#39;__hash__&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;__init_subclass__&#39;</span><span class="p">,</span> <span class="s1">&#39;__le__&#39;</span><span class="p">,</span> <span class="s1">&#39;__lt__&#39;</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;__ne__&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;__new__&#39;</span><span class="p">,</span> <span class="s1">&#39;__str__&#39;</span><span class="p">,</span> <span class="o">...</span><span class="s1">&#39;]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><cite>__repr__</cite>: called when doing <cite>print(o)</cite></p></li>
+<li><p><cite>__str__</cite>: called when <cite>str(o)</cite></p></li>
+<li><p><cite>__hash__</cite>: called when <cite>hash(o)</cite></p></li>
+<li><p><cite>__eq__</cite>: called when <cite>o == “a”</cite></p></li>
+<li><p>…</p></li>
+</ul>
+</div>
+<div class="section" id="defining-class-and-instance-attributes">
+<h3><span class="section-number">4.1.3. </span>Defining class and instance attributes<a class="headerlink" href="#defining-class-and-instance-attributes" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MLModel</span><span class="p">:</span>
+    <span class="c1"># this is a class attribute</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MLModel&quot;</span>
+    <span class="c1"># this is the class constructor</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="c1"># example instance attribute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># When we call the class, it internally executes</span>
+<span class="c1"># the __init__ method (constructor)</span>
+&gt; <span class="nv">ml_model</span> <span class="o">=</span> MLModel<span class="o">([</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">])</span>
+<span class="c1"># we access the instance attribute</span>
+&gt; ml_model.parameters
+<span class="o">[</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">]</span>
+<span class="c1"># class attributes are also accessible from the instance:</span>
+&gt; ml_model.name
+</pre></div>
+</div>
+</div>
+<div class="section" id="defining-instance-methods">
+<h3><span class="section-number">4.1.4. </span>Defining instance methods<a class="headerlink" href="#defining-instance-methods" title="Permalink to this headline">¶</a></h3>
+<p>Instance methods are functions defined on the instances of a class. They must
+take the instance as an input, together with any other arguments</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="k">class</span> <span class="nc">MLModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the model parameters into a file names `path`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">ml_model</span> <span class="o">=</span> MLModel<span class="o">([</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">])</span>
+<span class="c1"># When we call an instance method, the `self`</span>
+<span class="c1"># parameter is passed implicitly</span>
+&gt; ml_model.save_parameters<span class="o">(</span><span class="s1">&#39;model.pkl&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Class members are mutable!</p>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">ml_model</span> <span class="o">=</span> MLModel<span class="o">([</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">])</span>
+<span class="c1"># we can freely override paremeters</span>
+&gt; ml_model.parameters <span class="o">=</span> <span class="s2">&quot;whatever&quot;</span>
+<span class="c1"># or even define new methods and attach them to the instance</span>
+&gt; ml_models.new_method <span class="o">=</span> lambda x: <span class="m">2</span>*x
+</pre></div>
+</div>
+<p class="note"><a class="reference external" href="https://www.machinelearningplus.com/python/python-property/">&#64;property decorators</a> are a way to make sure setting attributes is disabled or
+doesn’t break things</p>
+</div>
+<div class="section" id="defining-class-methods">
+<h3><span class="section-number">4.1.5. </span>Defining class methods<a class="headerlink" href="#defining-class-methods" title="Permalink to this headline">¶</a></h3>
+<p>Class methods apply to the class, not the <strong>object</strong>. They are useful
+for things like <a class="reference external" href="https://en.wikipedia.org/wiki/Factory_method_pattern">factory methods</a></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MLModel</span><span class="p">:</span>
+
+    <span class="o">....</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">saved_parameters_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an instance of `MLModel` from the parameters saved via</span>
+<span class="sd">        `MLModel.save_parameters`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">saved_parameters_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inheritance">
+<h3><span class="section-number">4.1.6. </span>Inheritance<a class="headerlink" href="#inheritance" title="Permalink to this headline">¶</a></h3>
+<p>Classes can inherit from classes other than <cite>object</cite>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LogisticRegressionModel</span><span class="p">(</span><span class="n">MLModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="c1"># This calls LogisticRegressionModel&#39;s superclass constructor.</span>
+        <span class="c1"># It is equivalent to MLModel.__init__(self, parameters) but preferred,</span>
+        <span class="c1"># because it avoids hard-coding the parent class name</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="o">...</span>
+</pre></div>
+</div>
+<p class="note">Now every instance of <cite>LogisticRegressionModel</cite> has a <cite>save_parameters</cite> method inherited from <cite>MLModel</cite>,
+and the <cite>LogisticRegressionModel</cite> class has a <cite>load</cite> method.</p>
+</div>
+<div class="section" id="multiple-inheritance">
+<h3><span class="section-number">4.1.7. </span>Multiple Inheritance<a class="headerlink" href="#multiple-inheritance" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">class</span> <span class="nc">LinearModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span> <span class="o">=</span> <span class="n">coefficients</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">LogisticRegressionModel</span><span class="p">(</span><span class="n">MLModel</span><span class="p">,</span> <span class="n">LinearModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+            <span class="c1"># We also need to call the constructor for `LinearModel`!</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">MLModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="n">x_times_coef</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x_times_coef</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.15.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.15.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.15.png" style="width: 400px;" /></a>
+<p class="note">When we run <cite>super().__init__(parameters)</cite>, which of the 2 parent classes’ __init__ do we run?</p>
+<p>Multiple inheritance is tricky, particularly when we have <cite>diamond inheritance</cite>
+or methods with the same name:</p>
+<ul class="simple">
+<li><p>Python implements a <cite>method resolution order</cite> (mro)</p></li>
+<li><p>It can be summarized as <cite>depth-first, left to right</cite> (<a class="reference external" href="https://docs.python.org/3/tutorial/classes.html#multiple-inheritance">source</a>)</p></li>
+<li><p>You can inspect a class’ mro by looking at its <cite>.__mro__</cite> attribute</p></li>
+</ul>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; LogisticRegressionModel.mro<span class="o">()</span>
+<span class="o">[</span>&lt;class <span class="s1">&#39;__main__.LogisticRegressionModel&#39;</span>&gt;, &lt;class <span class="s1">&#39;__main__.MLModel&#39;</span>&gt;, &lt;class <span class="s1">&#39;__main__.LinearModel&#39;</span>&gt;, &lt;class <span class="s1">&#39;object&#39;</span>&gt;<span class="o">]</span>
+</pre></div>
+</div>
+<p>More on <cite>super</cite>: <a class="reference external" href="https://rhettinger.wordpress.com/2011/05/26/super-considered-super/">Super considered super</a></p>
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.16.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.16.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.16.png" style="width: 500px;" /></a>
+<p class="note">When we run <cite>super().__init__(parameters)</cite>, we will run <cite>MLModel.__init__</cite></p>
+</div>
+<div class="section" id="mixin-classes">
+<h3><span class="section-number">4.1.8. </span>Mixin classes<a class="headerlink" href="#mixin-classes" title="Permalink to this headline">¶</a></h3>
+<p>Mix-in classes are designed to be used with multiple inheritance:</p>
+<ul class="simple">
+<li><p>They provide specific functionality to derived classes.</p></li>
+<li><dl class="simple">
+<dt>It is recommended that:</dt><dd><ul>
+<li><p>they include a <cite>super().__init__</cite> call in their constructor and that</p></li>
+<li><p>they are used first in the subclasses</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ModelSavingMixin</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># this will fail unless `parameters` exist!</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">saved_parameters_path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">saved_parameters_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LogisticRegressionModel</span><span class="p">(</span><span class="n">ModelSavingMixin</span><span class="p">,</span> <span class="n">LinearModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+            <span class="c1"># No longer need to call the constructor for `LinearModel`!</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="n">x_times_coef</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x_times_coef</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="note">The <cite>LogisticRegressionModel</cite> now has saving and loading functionality inherited from
+<cite>ModelSavingMixin</cite></p>
+<p>We still have a problem…</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ModelSavingMixin</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># this will fail unless `parameters` exist!</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="note">Some models may have a vector of parameters, others are parameterized otherwise….
+How can we make this more generic so that it can be reused?</p>
+</div>
+<div class="section" id="abstract-classes-and-interfaces">
+<h3><span class="section-number">4.1.9. </span>Abstract classes and interfaces<a class="headerlink" href="#abstract-classes-and-interfaces" title="Permalink to this headline">¶</a></h3>
+<p>The latter is a good reason to define the mix-in as an <cite>abstract class</cite>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AbstractModelSavingMixin</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># this will fail unless we override self.get_parameters()</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">())</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">saved_parameters_path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">saved_parameters_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For now the only thing that makes the class <cite>abstract</cite> is
+its name and the unimplemented <cite>get_parameters()</cite>…</p>
+<p class="note">The <cite>abc</cite> (abstract base classes) library is useful to make it more like a regular <cite>abstract</cite> class:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">abc</span>
+<span class="c1"># inherits from abc.ABC, which internally sets a `meta_class`</span>
+<span class="c1"># cf: https://realpython.com/python-metaclasses/</span>
+<span class="k">class</span> <span class="nc">AbstractModelSavingMixin</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieves the parameters of the model as a pickable object&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># this will fail unless we override self.get_parameters()</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">())</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>And now we just need to implement
+the <cite>get_parameters</cite> method in its subclasses:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LogisticRegressionModel</span><span class="p">(</span><span class="n">ModelSavingMixin</span><span class="p">,</span> <span class="n">LinearModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># the implementation could vary depending on the model.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="n">x_times_coef</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x_times_coef</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">model</span> <span class="o">=</span> LogisticRegressionModel<span class="o">(</span>np.ones<span class="o">(</span><span class="m">3</span><span class="o">))</span>
+&gt; model.save_parameters<span class="o">(</span><span class="s1">&#39;model.tmp&#39;</span><span class="o">)</span>
+&gt; <span class="nv">loaded_model</span> <span class="o">=</span> LogisticRegressionModel.load<span class="o">(</span><span class="s1">&#39;model.tmp&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Any class subclassing <cite>AbstractModelSavingMixin</cite> will:</p>
+<ul class="simple">
+<li><p>Not be instantiable unless it defines <cite>get_parameters</cite></p></li>
+<li><p>Return the expected <cite>issubclass</cite> and <cite>isinstance</cite> behavior:</p></li>
+</ul>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">model</span> <span class="o">=</span> LogisticRegressionModel<span class="o">(</span>np.ones<span class="o">(</span><span class="m">3</span><span class="o">))</span>
+&gt; issubclass<span class="o">(</span>LogisticRegressionModel, AbstractModelSavingMixin<span class="o">)</span>
+&gt; isinstance<span class="o">(</span>model, AbstractModelSavingMixin<span class="o">)</span>
+</pre></div>
+</div>
+<p>More info: <a class="reference external" href="https://pymotw.com/3/abc/">Abstract Base Classes from PyMOTW</a></p>
+</div>
+<div class="section" id="why-bother-about-all-of-this">
+<h3><span class="section-number">4.1.10. </span>Why bother about all of this!?<a class="headerlink" href="#why-bother-about-all-of-this" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><strong>Maintainability</strong>: Can a new developer understand what is going on?</p></li>
+<li><p><strong>Extensibility</strong>: How easy is it to add new functionality?</p></li>
+<li><p><strong>Testability</strong>: How easy is it to unit test each functionality?</p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Beware of building abstractions for problems we don’t yet understand!
+It’s often better to start with concrete implementations.</p>
+</div>
+</div>
+<div class="section" id="python-s-philosophy-dynamic-duck-typing">
+<h3><span class="section-number">4.1.11. </span>Python’s philosophy: (Dynamic) Duck typing<a class="headerlink" href="#python-s-philosophy-dynamic-duck-typing" title="Permalink to this headline">¶</a></h3>
+<p class="note">“If it walks like a duck and it quacks like a duck, then it must be a duck”</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/ducktourboatbeaching.jpeg"><img alt="../_images/ducktourboatbeaching.jpeg" src="../_images/ducktourboatbeaching.jpeg" style="width: 600px;" /></a>
+</div>
+</div>
+<div class="section" id="practice-time">
+<h3><span class="section-number">4.1.12. </span>Practice time<a class="headerlink" href="#practice-time" title="Permalink to this headline">¶</a></h3>
+<p>Let’s practice by improving the way we implemented
+text pre-processing in the <a class="reference external" href="https://github.com/mlinproduction/capstone/tree/277147ea6070c5ddfb4c519667a75392c4d78a9e">capstone project</a>.</p>
+<p>1. Take a look at how we apply a text pre-processing in the
+<a class="reference external" href="https://github.com/mlinproduction/capstone/blob/277147ea6070c5ddfb4c519667a75392c4d78a9e/2020/preprocessing/preprocessing/utils.py#L83">LocalTextCategorizationDataset</a>
+class in the <cite>preprocessing</cite> package and how we instantiate this class in
+the <a class="reference external" href="https://github.com/mlinproduction/capstone/blob/277147ea6070c5ddfb4c519667a75392c4d78a9e/2020/train/train/run.py#L24">train module</a>.</p>
+<ol class="arabic simple" start="2">
+<li><p>What are the problems of this approach?</p></li>
+</ol>
+<p>3. Let’s think and implement a design that: (1) Ensures the function we pass to the <a class="reference external" href="https://github.com/mlinproduction/capstone/blob/277147ea6070c5ddfb4c519667a75392c4d78a9e/2020/preprocessing/preprocessing/utils.py#L83">LocalTextCategorizationDataset</a> constructor abides by an expected interface,
+and (2) Enables other developers to build other pre-processing implementations that will work</p>
+</div>
+</div>
+<div class="section" id="packaging-in-python">
+<h2><span class="section-number">4.2. </span>Packaging in Python<a class="headerlink" href="#packaging-in-python" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="modules">
+<h3><span class="section-number">4.2.1. </span>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h3>
+<p>A Python “module” is a single namespace, with a collection of values:</p>
+<ul class="simple">
+<li><p>functions</p></li>
+<li><p>constants</p></li>
+<li><p>class definitions</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># hello_world.py</span>
+<span class="n">hello_str</span> <span class="o">=</span> <span class="s2">&quot;hello </span><span class="si">{}</span><span class="s2">&quot;</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> <span class="k">return</span> <span class="n">hello_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; from hello_world import hello
+&gt; hello<span class="o">(</span><span class="s2">&quot;arnau&quot;</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="packages">
+<h3><span class="section-number">4.2.2. </span>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h3>
+<p>A package is a directory with a file called <cite>__init__.py</cite> and any number of modules or other package directories:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>greetings
+   __init__.py
+   hello_world.py
+   spanish
+     __init__.py
+     hola_mundo.py
+</pre></div>
+</div>
+<p class="note">The <cite>__init__.py</cite> file can be empty or have code in it, it will be run when the package is imported (<cite>import greetings</cite>)</p>
+<p>In addition, a python package is usually bundled with:</p>
+<ul class="simple">
+<li><p>Documentation</p></li>
+<li><p>Tests</p></li>
+<li><p>Top-level scripts</p></li>
+<li><p>Data/Resources</p></li>
+<li><p><strong>Instructions to build and install it</strong></p></li>
+</ul>
+</div>
+<div class="section" id="setuptools">
+<h3><span class="section-number">4.2.3. </span>setuptools<a class="headerlink" href="#setuptools" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://pythonhosted.org//setuptools/">setuptools</a> is an extension to
+Python’s original packaging tool (<cite>distutils</cite>) that provides a number of
+functionalities:</p>
+<ul class="simple">
+<li><p>helpers for installer script</p></li>
+<li><p>auto-finding dependencies</p></li>
+<li><p>resource management</p></li>
+<li><p>develop mode</p></li>
+</ul>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>setup.py <span class="c1"># this is the installer/build script</span>
+greetings
+   __init__.py
+   hello_world.py
+   spanish
+     __init__.py
+     hola_mundo.py
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># setup.py</span>
+<span class="kn">import</span> <span class="nn">setuptools</span>
+<span class="n">setuptools</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;greetings&#39;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span>
+    <span class="n">packages</span><span class="o">=</span><span class="n">setuptools</span><span class="o">.</span><span class="n">find_packages</span><span class="p">(),</span>
+    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pandas &gt;0.1,&lt;1.0&#39;</span><span class="p">]</span> <span class="c1"># dependencies</span>
+    <span class="n">python_requires</span><span class="o">=</span><span class="s1">&#39;&gt;=3.6&#39;</span> <span class="c1"># python version</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This was just a simple example,
+<cite>setup.py</cite> enables a lot more configuration:</p>
+<ul class="simple">
+<li><p>Version &amp; package metadata</p></li>
+<li><p>List of other files to include</p></li>
+<li><p>List of dependencies</p></li>
+<li><p>List of extensions to be compiled</p></li>
+</ul>
+<p class="note">It’s out of the scope of this training but instead of passing arguments to the <cite>setuptools.setup</cite> function, one can
+also configure the build via a <cite>setup.cfg</cite> <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files">configuration file.</a></p>
+<p>With the <cite>setup.py</cite> ready, we can:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># build a (source or wheel) distribution</span>
+&gt; python setup.py sdist bdist_wheel
+
+<span class="c1"># install locally</span>
+&gt; python setup.py install
+<span class="c1"># or</span>
+&gt; pip install .
+
+<span class="c1"># or install in develop/editable mode</span>
+&gt; python setup.py develop
+&gt; pip install -e .
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3><span class="section-number">4.2.4. </span>Practice time<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>1. Create a <cite>greetings</cite> package with two sub-packages, <cite>english</cite> and <cite>spanish</cite>, each containing a simple function
+to greet in the corresponding language, using the <a class="reference external" href="https://pypi.org/project/termcolor/">termcolor</a> package
+to print the greeting in color.</p>
+<ol class="arabic simple" start="2">
+<li><p>Write the <cite>setup.py</cite> script for the package, including the requirement for the <cite>termcolor</cite> dependency</p></li>
+<li><p>Install the package in develop mode (don’t forget to do it in the <cite>ml_in_prod</cite> environment!)</p></li>
+<li><p>Change some of the code and notice how the changes are reflected on the next import, without having to re-install</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="other-useful-python-patterns">
+<h2><span class="section-number">4.3. </span>Other useful Python patterns<a class="headerlink" href="#other-useful-python-patterns" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="decorators">
+<h3><span class="section-number">4.3.1. </span>decorators<a class="headerlink" href="#decorators" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="c1"># here de define the decorator, which is a higher-order function</span>
+<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">timed_f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Call to </span><span class="si">{f.__name__}</span><span class="s2"> took: {time.time() - tic}&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span>
+    <span class="k">return</span> <span class="n">timed_f</span>
+
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sum<span class="o">(</span><span class="m">3</span>,4<span class="o">)</span>
+Call to sum took: <span class="m">3</span>.814697265625e-06
+</pre></div>
+</div>
+<p>There are a few built-in decorators:</p>
+<ul class="simple">
+<li><p>&#64;property: to decorate an instance method so that it behaves like an attribute, configure setters/getters</p></li>
+<li><p>&#64;classmethod: to define a class method</p></li>
+<li><p>&#64;staticmethod: to define a method as static (can be used without instantiation)</p></li>
+</ul>
+<p>And several typical use cases:</p>
+<ul class="simple">
+<li><p>logging</p></li>
+<li><p>caching</p></li>
+<li><p>implementing re-tries</p></li>
+<li><p>registering plugins, etc</p></li>
+</ul>
+</div>
+<div class="section" id="iterators">
+<h3><span class="section-number">4.3.2. </span>iterators<a class="headerlink" href="#iterators" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>An object is an iterator if it implements the <cite>iterator protocol</cite> (__iter__ and __next__ methods)</p></li>
+<li><p>if an object implements the iterator protocol… <cite>it can be iterated</cite></p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">hello_worlds</span> <span class="o">=</span> <span class="n">HelloWorldIterator</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">hello_world</span> <span class="ow">in</span> <span class="n">hello_worlds</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="note">Let’s build a <cite>HelloWorldIterator</cite> !</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloWorldIterator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># here we could return any object implementing __next__</span>
+        <span class="c1"># for simplicity, we return self which implements __next__ :)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="s2">&quot;Hello!&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+</pre></div>
+</div>
+<p>As you can imagine, there are several objects in python with built-in iterators:</p>
+<ul class="simple">
+<li><p>lists</p></li>
+<li><p>tuples</p></li>
+<li><p>dict</p></li>
+</ul>
+<p>You can check by yourself:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">dict</span><span class="p">())</span> <span class="c1"># or dir({&#39;a&#39;: 1})</span>
+<span class="p">[</span><span class="o">....</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">,</span> <span class="o">....</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dict_iterator</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">dict_iterator</span><span class="p">)</span>
+<span class="p">[</span><span class="o">....</span> <span class="s1">&#39;__next__&#39;</span><span class="p">,</span> <span class="o">....</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generators">
+<h3><span class="section-number">4.3.3. </span>generators<a class="headerlink" href="#generators" title="Permalink to this headline">¶</a></h3>
+<p>The <cite>iterator</cite> pattern is a bit cumbersome… In many cases we can accomplish the same using the <cite>generator</cite> pattern:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello_world_generator</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;Hello!&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="k">for</span> hello_world in hello_world_generator<span class="o">(</span><span class="m">10</span><span class="o">)</span>: print<span class="o">(</span>hello_world<span class="o">)</span>
+</pre></div>
+</div>
+<p>Or even more succint: using a <cite>generator comprehension</cite>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">hello_world_generator_2</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;hello&quot;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">hello_world</span> <span class="ow">in</span> <span class="n">hello_world_generator_2</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="note">The most important thing about generators (and some iterators) is that they are <cite>lazy</cite>-evaluated: that is, their elements are not
+computed or stored in memory until it is their turn. (Unlike lists, dicts, etc)</p>
+<p>Example applications:</p>
+<ul class="simple">
+<li><p>Loading data in chunks that would not fit in memory (deep learning)</p></li>
+<li><p>Exploring combinatorial data structures without running out of memory</p></li>
+<li><p>Implementing lazily-evaluated data pipelines…</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ML In Production 2020 edition</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1_reproducibility/1_1_1_conda.html">1. Environment management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_reproducibility/1_1_2_make.html">2. Simple automation with Make</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_reproducibility/1_1_3_project_templates.html">3. Project templates</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Programming in Python for DS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#oop-in-python">4.1. OOP in Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classes-and-objects">4.1.1. Classes and objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#classes-have-members">4.1.2. Classes have members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defining-class-and-instance-attributes">4.1.3. Defining class and instance attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defining-instance-methods">4.1.4. Defining instance methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#defining-class-methods">4.1.5. Defining class methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inheritance">4.1.6. Inheritance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-inheritance">4.1.7. Multiple Inheritance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mixin-classes">4.1.8. Mixin classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#abstract-classes-and-interfaces">4.1.9. Abstract classes and interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-bother-about-all-of-this">4.1.10. Why bother about all of this!?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python-s-philosophy-dynamic-duck-typing">4.1.11. Python’s philosophy: (Dynamic) Duck typing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#practice-time">4.1.12. Practice time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#packaging-in-python">4.2. Packaging in Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modules">4.2.1. Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packages">4.2.2. Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#setuptools">4.2.3. setuptools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">4.2.4. Practice time</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#other-useful-python-patterns">4.3. Other useful Python patterns</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#decorators">4.3.1. decorators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iterators">4.3.2. iterators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generators">4.3.3. generators</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../1_reproducibility/1_1_1_conda.html">1. Environment management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_reproducibility/1_1_2_make.html">2. Simple automation with Make</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../1_reproducibility/1_1_3_project_templates.html">3. Project templates</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Programming in Python for DS</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../1_reproducibility/1_1_3_project_templates.html" title="previous chapter"><span class="section-number">3. </span>Project templates</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Arnau Tibau Puig.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

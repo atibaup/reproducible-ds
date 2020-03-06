@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. Programming in Python for DS &mdash; ML In Production 2020 edition 2019.12.28 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/slides.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    
+    
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2019.12.28',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/common.js"></script>
+    
+    <script type="text/javascript" src="../_static/slides.js"></script>
+    <script type="text/javascript" src="../_static/sync.js"></script>
+    <script type="text/javascript" src="../_static/controller.js"></script>
+    <script type="text/javascript" src="../_static/init.js"></script>
+    
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="ML In Production 2020 edition 2019.12.28 documentation" href="../index.html" />
+    <link rel="prev" title="3. Project templates" href="../1_reproducibility/1_1_3_project_templates.html" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  
+<article class="slide level-1" id="programming-in-python-for-ds">
+
+<h1>Programming in Python for DS</h1>
+
+
+
+
+<div class="slide-no">1</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-2" id="oop-in-python">
+
+<h2>OOP in Python</h2>
+
+
+
+
+<div class="slide-no">2</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="classes-and-objects">
+
+<h3>Classes and objects</h3>
+
+<p>Here’s the simplest possible class</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Foo</span><span class="p">:</span> <span class="k">pass</span>
+</pre></div>
+</div>
+<p>When we “call” a class, we <strong>instantiate</strong>
+it, returning an <strong>object</strong> of type <cite>Foo</cite> (also known as <cite>class instance</cite>):</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span>&gt; foo = Foo()
+&gt; type(foo)
+&lt;class &#39;__main__.Foo&#39;&gt;
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">3</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id4">
+
+<h3>Classes and objects (2)</h3>
+
+<p>In Python, <strong>everything is an object</strong>. Try for instance:</p>
+<ul class="simple">
+<li><cite>type(int)</cite>: built-in types</li>
+<li><cite>type(Foo)</cite>: classes</li>
+<li><cite>type(foo)</cite>: instances of classes</li>
+<li><cite>type(ValueError)</cite>: exceptions</li>
+<li><cite>type((_ for _ in range(10)))</cite>: other built-in types, like generators</li>
+<li><cite>type(lambda x: 2*x)</cite>: functions</li>
+</ul>
+
+
+
+<div class="slide-no">4</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="classes-have-members">
+
+<h3>Classes have members</h3>
+
+<p>Class members are either:</p>
+<ul class="simple">
+<li><strong>Atributes</strong> - properties stored in the class or its instances</li>
+<li><strong>Methods</strong> - functions associated to the class or its instances</li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="n">Foo</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span> <span class="c1"># inspects an object members</span>
+<span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="s1">&#39;__delattr__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dir__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__eq__&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;__format__&#39;</span><span class="p">,</span> <span class="s1">&#39;__ge__&#39;</span><span class="p">,</span> <span class="s1">&#39;__getattribute__&#39;</span><span class="p">,</span> <span class="s1">&#39;__gt__&#39;</span><span class="p">,</span> <span class="s1">&#39;__hash__&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">,</span>
+  <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p class="note">We haven’t defined any attributes or methods and yet our class already has many…</p>
+
+
+
+<div class="slide-no">5</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id5">
+
+<h3>Classes have members (2)</h3>
+
+<p>All Python (3+) classes implicitly inherit from <cite>object</cite>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">o</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+<span class="o">&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;__class__&#39;</span><span class="p">,</span> <span class="s1">&#39;__delattr__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dict__&#39;</span><span class="p">,</span> <span class="s1">&#39;__dir__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__eq__&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;__format__&#39;</span><span class="p">,</span> <span class="s1">&#39;__ge__&#39;</span><span class="p">,</span> <span class="s1">&#39;__getattribute__&#39;</span><span class="p">,</span> <span class="s1">&#39;__gt__&#39;</span><span class="p">,</span> <span class="s1">&#39;__hash__&#39;</span><span class="p">,</span> <span class="s1">&#39;__init__&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;__init_subclass__&#39;</span><span class="p">,</span> <span class="s1">&#39;__le__&#39;</span><span class="p">,</span> <span class="s1">&#39;__lt__&#39;</span><span class="p">,</span> <span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;__ne__&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;__new__&#39;</span><span class="p">,</span> <span class="s1">&#39;__str__&#39;</span><span class="p">,</span> <span class="o">...</span><span class="s1">&#39;]</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><cite>__repr__</cite>: called when doing <cite>print(o)</cite></li>
+<li><cite>__str__</cite>: called when <cite>str(o)</cite></li>
+<li><cite>__hash__</cite>: called when <cite>hash(o)</cite></li>
+<li><cite>__eq__</cite>: called when <cite>o == “a”</cite></li>
+<li>…</li>
+</ul>
+
+
+
+<div class="slide-no">6</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="defining-class-and-instance-attributes">
+
+<h3>Defining class and instance attributes</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MLModel</span><span class="p">:</span>
+    <span class="c1"># this is a class attribute</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;MLModel&quot;</span>
+    <span class="c1"># this is the class constructor</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="c1"># example instance attribute</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">7</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id6">
+
+<h3>Defining class and instance attributes (2)</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># When we call the class, it internally executes</span>
+<span class="c1"># the __init__ method (constructor)</span>
+&gt; <span class="nv">ml_model</span> <span class="o">=</span> MLModel<span class="o">([</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">])</span>
+<span class="c1"># we access the instance attribute</span>
+&gt; ml_model.parameters
+<span class="o">[</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">]</span>
+<span class="c1"># class attributes are also accessible from the instance:</span>
+&gt; ml_model.name
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">8</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="defining-instance-methods">
+
+<h3>Defining instance methods</h3>
+
+<p>Instance methods are functions defined on the instances of a class. They must
+take the instance as an input, together with any other arguments</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="k">class</span> <span class="nc">MLModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the model parameters into a file names `path`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">9</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id7">
+
+<h3>Defining instance methods (2)</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">ml_model</span> <span class="o">=</span> MLModel<span class="o">([</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">])</span>
+<span class="c1"># When we call an instance method, the `self`</span>
+<span class="c1"># parameter is passed implicitly</span>
+&gt; ml_model.save_parameters<span class="o">(</span><span class="s1">&#39;model.pkl&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">10</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id8">
+
+<h3>Defining instance methods (3)</h3>
+
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Class members are mutable!</p>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">ml_model</span> <span class="o">=</span> MLModel<span class="o">([</span><span class="m">1</span>, <span class="m">2</span>, <span class="m">3</span><span class="o">])</span>
+<span class="c1"># we can freely override paremeters</span>
+&gt; ml_model.parameters <span class="o">=</span> <span class="s2">&quot;whatever&quot;</span>
+<span class="c1"># or even define new methods and attach them to the instance</span>
+&gt; ml_models.new_method <span class="o">=</span> lambda x: <span class="m">2</span>*x
+</pre></div>
+</div>
+<p class="note"><a class="reference external" href="https://www.machinelearningplus.com/python/python-property/">&#64;property decorators</a> are a way to make sure setting attributes is disabled or
+doesn’t break things</p>
+
+
+
+<div class="slide-no">11</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="defining-class-methods">
+
+<h3>Defining class methods</h3>
+
+<p>Class methods apply to the class, not the <strong>object</strong>. They are useful
+for things like <a class="reference external" href="https://en.wikipedia.org/wiki/Factory_method_pattern">factory methods</a></p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MLModel</span><span class="p">:</span>
+
+    <span class="o">....</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">saved_parameters_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an instance of `MLModel` from the parameters saved via</span>
+<span class="sd">        `MLModel.save_parameters`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">saved_parameters_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">12</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="inheritance">
+
+<h3>Inheritance</h3>
+
+<p>Classes can inherit from classes other than <cite>object</cite>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LogisticRegressionModel</span><span class="p">(</span><span class="n">MLModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="c1"># This calls LogisticRegressionModel&#39;s superclass constructor.</span>
+        <span class="c1"># It is equivalent to MLModel.__init__(self, parameters) but preferred,</span>
+        <span class="c1"># because it avoids hard-coding the parent class name</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="o">...</span>
+</pre></div>
+</div>
+<p class="note">Now every instance of <cite>LogisticRegressionModel</cite> has a <cite>save_parameters</cite> method inherited from <cite>MLModel</cite>,
+and the <cite>LogisticRegressionModel</cite> class has a <cite>load</cite> method.</p>
+
+
+
+<div class="slide-no">13</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="multiple-inheritance">
+
+<h3>Multiple Inheritance</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">class</span> <span class="nc">LinearModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coefficients</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span> <span class="o">=</span> <span class="n">coefficients</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coefficients</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">LogisticRegressionModel</span><span class="p">(</span><span class="n">MLModel</span><span class="p">,</span> <span class="n">LinearModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+            <span class="c1"># We also need to call the constructor for `LinearModel`!</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">MLModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="n">x_times_coef</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x_times_coef</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">14</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id9">
+
+<h3>Multiple Inheritance (2)</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.15.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.15.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.15.png" style="width: 400px;" /></a>
+<p class="note">When we run <cite>super().__init__(parameters)</cite>, which of the 2 parent classes’ __init__ do we run?</p>
+
+
+
+<div class="slide-no">15</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id10">
+
+<h3>Multiple Inheritance (3)</h3>
+
+<p>Multiple inheritance is tricky, particularly when we have <cite>diamond inheritance</cite>
+or methods with the same name:</p>
+<ul class="simple">
+<li>Python implements a <cite>method resolution order</cite> (mro)</li>
+<li>It can be summarized as <cite>depth-first, left to right</cite> (<a class="reference external" href="https://docs.python.org/3/tutorial/classes.html#multiple-inheritance">source</a>)</li>
+<li>You can inspect a class’ mro by looking at its <cite>.__mro__</cite> attribute</li>
+</ul>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; LogisticRegressionModel.mro<span class="o">()</span>
+<span class="o">[</span>&lt;class <span class="s1">&#39;__main__.LogisticRegressionModel&#39;</span>&gt;, &lt;class <span class="s1">&#39;__main__.MLModel&#39;</span>&gt;, &lt;class <span class="s1">&#39;__main__.LinearModel&#39;</span>&gt;, &lt;class <span class="s1">&#39;object&#39;</span>&gt;<span class="o">]</span>
+</pre></div>
+</div>
+<p>More on <cite>super</cite>: <a class="reference external" href="https://rhettinger.wordpress.com/2011/05/26/super-considered-super/">Super considered super</a></p>
+
+
+
+<div class="slide-no">16</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id11">
+
+<h3>Multiple Inheritance (4)</h3>
+
+<a class="reference internal image-reference" href="../_images/Paper.ML_in_Prod_-_feb_2020.16.png"><img alt="../_images/Paper.ML_in_Prod_-_feb_2020.16.png" class="align-center" src="../_images/Paper.ML_in_Prod_-_feb_2020.16.png" style="width: 500px;" /></a>
+<p class="note">When we run <cite>super().__init__(parameters)</cite>, we will run <cite>MLModel.__init__</cite></p>
+
+
+
+<div class="slide-no">17</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="mixin-classes">
+
+<h3>Mixin classes</h3>
+
+<p>Mix-in classes are designed to be used with multiple inheritance:</p>
+<ul class="simple">
+<li>They provide specific functionality to derived classes.</li>
+<li><dl class="first docutils">
+<dt>It is recommended that:</dt><dd><ul>
+<li>they include a <cite>super().__init__</cite> call in their constructor and that</li>
+<li>they are used first in the subclasses</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+
+
+
+<div class="slide-no">18</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id12">
+
+<h3>Mixin classes (2)</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ModelSavingMixin</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># this will fail unless `parameters` exist!</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">saved_parameters_path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">saved_parameters_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">19</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id13">
+
+<h3>Mixin classes (3)</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LogisticRegressionModel</span><span class="p">(</span><span class="n">ModelSavingMixin</span><span class="p">,</span> <span class="n">LinearModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+            <span class="c1"># No longer need to call the constructor for `LinearModel`!</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="n">x_times_coef</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x_times_coef</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="note">The <cite>LogisticRegressionModel</cite> now has saving and loading functionality inherited from
+<cite>ModelSavingMixin</cite></p>
+
+
+
+<div class="slide-no">20</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id14">
+
+<h3>Mixin classes (4)</h3>
+
+<p>We still have a problem…</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ModelSavingMixin</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># this will fail unless `parameters` exist!</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="note">Some models may have a vector of parameters, others are parameterized otherwise….
+How can we make this more generic so that it can be reused?</p>
+
+
+
+<div class="slide-no">21</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="abstract-classes-and-interfaces">
+
+<h3>Abstract classes and interfaces</h3>
+
+<p>The latter is a good reason to define the mix-in as an <cite>abstract class</cite>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">AbstractModelSavingMixin</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># this will fail unless we override self.get_parameters()</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">())</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">saved_parameters_path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">saved_parameters_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">22</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id15">
+
+<h3>Abstract classes and interfaces (2)</h3>
+
+<p>For now the only thing that makes the class <cite>abstract</cite> is
+its name and the unimplemented <cite>get_parameters()</cite>…</p>
+<p class="note">The <cite>abc</cite> (abstract base classes) library is useful to make it more like a regular <cite>abstract</cite> class:</p>
+
+
+
+<div class="slide-no">23</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id16">
+
+<h3>Abstract classes and interfaces (3)</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">abc</span>
+<span class="c1"># inherits from abc.ABC, which internally sets a `meta_class`</span>
+<span class="c1"># cf: https://realpython.com/python-metaclasses/</span>
+<span class="k">class</span> <span class="nc">AbstractModelSavingMixin</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrieves the parameters of the model as a pickable object&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="c1"># this will fail unless we override self.get_parameters()</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parameters</span><span class="p">())</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">24</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id17">
+
+<h3>Abstract classes and interfaces (4)</h3>
+
+<p>And now we just need to implement
+the <cite>get_parameters</cite> method in its subclasses:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LogisticRegressionModel</span><span class="p">(</span><span class="n">ModelSavingMixin</span><span class="p">,</span> <span class="n">LinearModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># the implementation could vary depending on the model.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+            <span class="n">x_times_coef</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x_times_coef</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">model</span> <span class="o">=</span> LogisticRegressionModel<span class="o">(</span>np.ones<span class="o">(</span><span class="m">3</span><span class="o">))</span>
+&gt; model.save_parameters<span class="o">(</span><span class="s1">&#39;model.tmp&#39;</span><span class="o">)</span>
+&gt; <span class="nv">loaded_model</span> <span class="o">=</span> LogisticRegressionModel.load<span class="o">(</span><span class="s1">&#39;model.tmp&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">25</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id18">
+
+<h3>Abstract classes and interfaces (5)</h3>
+
+<p>Any class subclassing <cite>AbstractModelSavingMixin</cite> will:</p>
+<ul class="simple">
+<li>Not be instantiable unless it defines <cite>get_parameters</cite></li>
+<li>Return the expected <cite>issubclass</cite> and <cite>isinstance</cite> behavior:</li>
+</ul>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">model</span> <span class="o">=</span> LogisticRegressionModel<span class="o">(</span>np.ones<span class="o">(</span><span class="m">3</span><span class="o">))</span>
+&gt; issubclass<span class="o">(</span>LogisticRegressionModel, AbstractModelSavingMixin<span class="o">)</span>
+&gt; isinstance<span class="o">(</span>model, AbstractModelSavingMixin<span class="o">)</span>
+</pre></div>
+</div>
+<p>More info: <a class="reference external" href="https://pymotw.com/3/abc/">Abstract Base Classes from PyMOTW</a></p>
+
+
+
+<div class="slide-no">26</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="why-bother-about-all-of-this">
+
+<h3>Why bother about all of this!?</h3>
+
+<ul class="simple">
+<li><strong>Maintainability</strong>: Can a new developer understand what is going on?</li>
+<li><strong>Extensibility</strong>: How easy is it to add new functionality?</li>
+<li><strong>Testability</strong>: How easy is it to unit test each functionality?</li>
+</ul>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Beware of building abstractions for problems we don’t yet understand!
+It’s often better to start with concrete implementations.</p>
+</div>
+
+
+
+<div class="slide-no">27</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="python-s-philosophy-dynamic-duck-typing">
+
+<h3>Python’s philosophy: (Dynamic) Duck typing</h3>
+
+<p class="note">“If it walks like a duck and it quacks like a duck, then it must be a duck”</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/ducktourboatbeaching.jpeg"><img alt="../_images/ducktourboatbeaching.jpeg" src="../_images/ducktourboatbeaching.jpeg" style="width: 600px;" /></a>
+</div>
+
+
+
+<div class="slide-no">28</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="practice-time">
+
+<h3>Practice time</h3>
+
+<p>Let’s practice by improving the way we implemented
+text pre-processing in the <a class="reference external" href="https://github.com/mlinproduction/capstone/tree/277147ea6070c5ddfb4c519667a75392c4d78a9e">capstone project</a>.</p>
+<p>1. Take a look at how we apply a text pre-processing in the
+<a class="reference external" href="https://github.com/mlinproduction/capstone/blob/277147ea6070c5ddfb4c519667a75392c4d78a9e/2020/preprocessing/preprocessing/utils.py#L83">LocalTextCategorizationDataset</a>
+class in the <cite>preprocessing</cite> package and how we instantiate this class in
+the <a class="reference external" href="https://github.com/mlinproduction/capstone/blob/277147ea6070c5ddfb4c519667a75392c4d78a9e/2020/train/train/run.py#L24">train module</a>.</p>
+<ol class="arabic simple" start="2">
+<li>What are the problems of this approach?</li>
+</ol>
+<p>3. Let’s think and implement a design that: (1) Ensures the function we pass to the <a class="reference external" href="https://github.com/mlinproduction/capstone/blob/277147ea6070c5ddfb4c519667a75392c4d78a9e/2020/preprocessing/preprocessing/utils.py#L83">LocalTextCategorizationDataset</a> constructor abides by an expected interface,
+and (2) Enables other developers to build other pre-processing implementations that will work</p>
+
+
+
+<div class="slide-no">29</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-2" id="packaging-in-python">
+
+<h2>Packaging in Python</h2>
+
+
+
+
+<div class="slide-no">30</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="modules">
+
+<h3>Modules</h3>
+
+<p>A Python “module” is a single namespace, with a collection of values:</p>
+<ul class="simple">
+<li>functions</li>
+<li>constants</li>
+<li>class definitions</li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># hello_world.py</span>
+<span class="n">hello_str</span> <span class="o">=</span> <span class="s2">&quot;hello </span><span class="si">{}</span><span class="s2">&quot;</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> <span class="k">return</span> <span class="n">hello_str</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt; from hello_world import hello
+&gt; hello<span class="o">(</span><span class="s2">&quot;arnau&quot;</span><span class="o">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">31</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="packages">
+
+<h3>Packages</h3>
+
+<p>A package is a directory with a file called <cite>__init__.py</cite> and any number of modules or other package directories:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>greetings
+   __init__.py
+   hello_world.py
+   spanish
+     __init__.py
+     hola_mundo.py
+</pre></div>
+</div>
+<p class="note">The <cite>__init__.py</cite> file can be empty or have code in it, it will be run when the package is imported (<cite>import greetings</cite>)</p>
+
+
+
+<div class="slide-no">32</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id19">
+
+<h3>Packages (2)</h3>
+
+<p>In addition, a python package is usually bundled with:</p>
+<ul class="simple">
+<li>Documentation</li>
+<li>Tests</li>
+<li>Top-level scripts</li>
+<li>Data/Resources</li>
+<li><strong>Instructions to build and install it</strong></li>
+</ul>
+
+
+
+<div class="slide-no">33</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="setuptools">
+
+<h3>setuptools</h3>
+
+<p><a class="reference external" href="http://pythonhosted.org//setuptools/">setuptools</a> is an extension to
+Python’s original packaging tool (<cite>distutils</cite>) that provides a number of
+functionalities:</p>
+<ul class="simple">
+<li>helpers for installer script</li>
+<li>auto-finding dependencies</li>
+<li>resource management</li>
+<li>develop mode</li>
+</ul>
+
+
+
+<div class="slide-no">34</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id20">
+
+<h3>setuptools (2)</h3>
+
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>setup.py <span class="c1"># this is the installer/build script</span>
+greetings
+   __init__.py
+   hello_world.py
+   spanish
+     __init__.py
+     hola_mundo.py
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># setup.py</span>
+<span class="kn">import</span> <span class="nn">setuptools</span>
+<span class="n">setuptools</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;greetings&#39;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span>
+    <span class="n">packages</span><span class="o">=</span><span class="n">setuptools</span><span class="o">.</span><span class="n">find_packages</span><span class="p">(),</span>
+    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pandas &gt;0.1,&lt;1.0&#39;</span><span class="p">]</span> <span class="c1"># dependencies</span>
+    <span class="n">python_requires</span><span class="o">=</span><span class="s1">&#39;&gt;=3.6&#39;</span> <span class="c1"># python version</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">35</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id21">
+
+<h3>setuptools (3)</h3>
+
+<p>This was just a simple example,
+<cite>setup.py</cite> enables a lot more configuration:</p>
+<ul class="simple">
+<li>Version &amp; package metadata</li>
+<li>List of other files to include</li>
+<li>List of dependencies</li>
+<li>List of extensions to be compiled</li>
+</ul>
+<p class="note">It’s out of the scope of this training but instead of passing arguments to the <cite>setuptools.setup</cite> function, one can
+also configure the build via a <cite>setup.cfg</cite> <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files">configuration file.</a></p>
+
+
+
+<div class="slide-no">36</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id22">
+
+<h3>setuptools (4)</h3>
+
+<p>With the <cite>setup.py</cite> ready, we can:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># build a (source or wheel) distribution</span>
+&gt; python setup.py sdist bdist_wheel
+
+<span class="c1"># install locally</span>
+&gt; python setup.py install
+<span class="c1"># or</span>
+&gt; pip install .
+
+<span class="c1"># or install in develop/editable mode</span>
+&gt; python setup.py develop
+&gt; pip install -e .
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">37</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id3">
+
+<h3>Practice time</h3>
+
+<p>1. Create a <cite>greetings</cite> package with two sub-packages, <cite>english</cite> and <cite>spanish</cite>, each containing a simple function
+to greet in the corresponding language, using the <a class="reference external" href="https://pypi.org/project/termcolor/">termcolor</a> package
+to print the greeting in color.</p>
+<ol class="arabic simple" start="2">
+<li>Write the <cite>setup.py</cite> script for the package, including the requirement for the <cite>termcolor</cite> dependency</li>
+<li>Install the package in develop mode (don’t forget to do it in the <cite>ml_in_prod</cite> environment!)</li>
+<li>Change some of the code and notice how the changes are reflected on the next import, without having to re-install</li>
+</ol>
+
+
+
+<div class="slide-no">38</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-2" id="other-useful-python-patterns">
+
+<h2>Other useful Python patterns</h2>
+
+
+
+
+<div class="slide-no">39</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="decorators">
+
+<h3>decorators</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="c1"># here de define the decorator, which is a higher-order function</span>
+<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">timed_f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Call to </span><span class="si">{f.__name__}</span><span class="s2"> took: {time.time() - tic}&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span>
+    <span class="k">return</span> <span class="n">timed_f</span>
+
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span> <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sum<span class="o">(</span><span class="m">3</span>,4<span class="o">)</span>
+Call to sum took: <span class="m">3</span>.814697265625e-06
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">40</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id23">
+
+<h3>decorators (2)</h3>
+
+<p>There are a few built-in decorators:</p>
+<ul class="simple">
+<li>&#64;property: to decorate an instance method so that it behaves like an attribute, configure setters/getters</li>
+<li>&#64;classmethod: to define a class method</li>
+<li>&#64;staticmethod: to define a method as static (can be used without instantiation)</li>
+</ul>
+<p>And several typical use cases:</p>
+<ul class="simple">
+<li>logging</li>
+<li>caching</li>
+<li>implementing re-tries</li>
+<li>registering plugins, etc</li>
+</ul>
+
+
+
+<div class="slide-no">41</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="iterators">
+
+<h3>iterators</h3>
+
+<ul class="simple">
+<li>An object is an iterator if it implements the <cite>iterator protocol</cite> (__iter__ and __next__ methods)</li>
+<li>if an object implements the iterator protocol… <cite>it can be iterated</cite></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">hello_worlds</span> <span class="o">=</span> <span class="n">HelloWorldIterator</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">hello_world</span> <span class="ow">in</span> <span class="n">hello_worlds</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="note">Let’s build a <cite>HelloWorldIterator</cite> !</p>
+
+
+
+<div class="slide-no">42</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id24">
+
+<h3>iterators (2)</h3>
+
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">HelloWorldIterator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># here we could return any object implementing __next__</span>
+        <span class="c1"># for simplicity, we return self which implements __next__ :)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="s2">&quot;Hello!&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">StopIteration</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">43</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id25">
+
+<h3>iterators (3)</h3>
+
+<p>As you can imagine, there are several objects in python with built-in iterators:</p>
+<ul class="simple">
+<li>lists</li>
+<li>tuples</li>
+<li>dict</li>
+</ul>
+<p>You can check by yourself:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="nb">dict</span><span class="p">())</span> <span class="c1"># or dir({&#39;a&#39;: 1})</span>
+<span class="p">[</span><span class="o">....</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">,</span> <span class="o">....</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">dict_iterator</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">dict_iterator</span><span class="p">)</span>
+<span class="p">[</span><span class="o">....</span> <span class="s1">&#39;__next__&#39;</span><span class="p">,</span> <span class="o">....</span><span class="p">]</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">44</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="generators">
+
+<h3>generators</h3>
+
+<p>The <cite>iterator</cite> pattern is a bit cumbersome… In many cases we can accomplish the same using the <cite>generator</cite> pattern:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hello_world_generator</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="s2">&quot;Hello!&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="k">for</span> hello_world in hello_world_generator<span class="o">(</span><span class="m">10</span><span class="o">)</span>: print<span class="o">(</span>hello_world<span class="o">)</span>
+</pre></div>
+</div>
+<p>Or even more succint: using a <cite>generator comprehension</cite>:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">hello_world_generator_2</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;hello&quot;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">hello_world</span> <span class="ow">in</span> <span class="n">hello_world_generator_2</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">hello_world</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+
+<div class="slide-no">45</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+<article class="slide level-3" id="id26">
+
+<h3>generators (2)</h3>
+
+<p class="note">The most important thing about generators (and some iterators) is that they are <cite>lazy</cite>-evaluated: that is, their elements are not
+computed or stored in memory until it is their turn. (Unlike lists, dicts, etc)</p>
+<p>Example applications:</p>
+<ul class="simple">
+<li>Loading data in chunks that would not fit in memory (deep learning)</li>
+<li>Exploring combinatorial data structures without running out of memory</li>
+<li>Implementing lazily-evaluated data pipelines…</li>
+</ul>
+
+
+
+<div class="slide-no">46</div>
+
+
+<div class="slide-footer">Machine Learning in Production - 2020, Barcelona</div>
+
+</article>
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>
